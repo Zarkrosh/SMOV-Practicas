@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">00-HelloUser</string>
+    <string name="strInputNombre">Introduce tu nombre</string>
+    <string name="holaNombre">¡Hola %s!</string>
+    <string name="strBtnHoli">Holi</string>
+</resources>
