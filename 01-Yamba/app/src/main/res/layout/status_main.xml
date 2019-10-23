@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutStatus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +10,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/title_status"
         android:textSize="30sp" />
@@ -19,15 +20,20 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:gravity="top|center_horizontal"
+        android:layout_margin="20dp"
+        android:gravity="top"
         android:maxLength="280"
+        android:padding="10dp"
+        android:background="@drawable/edittext_round_corners"
         android:hint="@string/hint_tweet" />
 
     <Button
         android:id="@+id/buttonTweet"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:text="@string/button_tweet"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:background="@drawable/button_round_corners" />
 
 </LinearLayout>

@@ -2,35 +2,34 @@ package com.hergomsoft.yamba;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 
 public class StatusActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "StatusActivity";
-    private EditText editStatus;
-    private Button buttonTweet;
 
-    private Twitter twitter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_main);
 
-        // Enlaza views
-        editStatus = (EditText) findViewById(R.id.editStatus);
-        buttonTweet = (Button) findViewById(R.id.buttonTweet);
-        buttonTweet.setOnClickListener(this);
+
 
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("NViYhW9DqCzIR7td2TOVwGglE")
@@ -46,12 +45,10 @@ public class StatusActivity extends AppCompatActivity implements View.OnClickLis
         String status = editStatus.getText().toString();
         Log.d(TAG, "onClicked");
 
-        try {
-            twitter.updateStatus(status);
-            Log.d(TAG, "Enviado correctamente");
-        } catch (Exception e) {
-            Log.e(TAG, "Fallo en el envío");
-            e.printStackTrace();
-        }
+        // Realiza el envío del estado
+        new StatusTask().execute(status);
     }
+
+
+
 }
