@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Yamba</string>
+
+    <!-- Pantalla de actualización de estado -->
     <string name="title_status">Actualizar estado</string>
     <string name="button_tweet">Twittear</string>
     <string name="hint_tweet">Escribe un tweet</string>
+    <string name="enviando_tweet">Enviando tweet...</string>
+    <string name="reintentar_tweet">Reintentar</string>
+    <string name="resultado_correcto">Tweet enviado correctamente</string>
+    <string name="resultado_sin_conexion">No hay conexión con Twitter</string>
+    <string name="resultado_inesperado">Ocurrió un error inesperado</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
