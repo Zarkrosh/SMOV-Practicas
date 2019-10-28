@@ -10,5 +10,8 @@
     <string name="resultado_correcto">Tweet enviado correctamente</string>
     <string name="resultado_sin_conexion">No hay conexión con Twitter</string>
     <string name="resultado_inesperado">Ocurrió un error inesperado</string>
+    <string name="resultado_limite_excedido">Se ha excedido el límite temporal de tweets</string>
+    <string name="resultado_recurso_no_encontrado">No se ha encontrado el recurso requerido</string>
+    <string name="resultado_desconocido">Error al enviar el tweet. Comprueba las credenciales</string>
 
 </resources>

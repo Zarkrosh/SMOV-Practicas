@@ -82,7 +82,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         // Resultados
         private final int RESULTADO_CORRECTO = 0;
         private final int RESULTADO_SIN_CONEXION = 1;
-        private final int RESULTADO_INESPERADO = 2;
+        private final int RESULTADO_RATE_LIMIT = 2;
+        private final int RESULTADO_RECURSO_NO_ENCONTRADO = 3;
+        private final int RESULTADO_DESCONOCIDO = 4;
+        private final int RESULTADO_INESPERADO = 5;
 
         @Override
         protected void onPreExecute() {
@@ -102,9 +105,21 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                 twitter.updateStatus(params[0]);
                 return RESULTADO_CORRECTO;
             } catch (TwitterException e) {
-                Log.e(TAG, "No hay conexión con Twitter");
                 e.printStackTrace();
-                return RESULTADO_SIN_CONEXION;
+                if(e.isCausedByNetworkIssue()) {
+                    Log.e(TAG, "No hay conexión con Twitter");
+                    return RESULTADO_SIN_CONEXION;
+                } else if(e.exceededRateLimitation()) {
+                    Log.e(TAG, "Se ha excedido el límite temporal de tweets");
+                    return RESULTADO_RATE_LIMIT;
+                } else if(e.resourceNotFound()) {
+                    Log.e(TAG, "No se ha encontrado el recurso requerido");
+                    return RESULTADO_RECURSO_NO_ENCONTRADO;
+                } else {
+                    // Excepción desconocida
+                    Log.e(TAG, "Excepción de Twitter desconocida");
+                    return RESULTADO_DESCONOCIDO;
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Error inesperado");
                 e.printStackTrace();
@@ -137,6 +152,18 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                             updateStatus();
                         }
                     });
+                    break;
+                case RESULTADO_RATE_LIMIT:
+                    snack.setText(getResources().getString(R.string.resultado_limite_excedido));
+                    snack_text.setTextColor(Color.RED);
+                    break;
+                case RESULTADO_RECURSO_NO_ENCONTRADO:
+                    snack.setText(getResources().getString(R.string.resultado_recurso_no_encontrado));
+                    snack_text.setTextColor(Color.RED);
+                    break;
+                case RESULTADO_DESCONOCIDO:
+                    snack.setText(getResources().getString(R.string.resultado_desconocido));
+                    snack_text.setTextColor(Color.RED);
                     break;
                 case RESULTADO_INESPERADO:
                 default:
