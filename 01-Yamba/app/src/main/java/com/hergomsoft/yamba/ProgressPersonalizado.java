@@ -9,6 +9,10 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * @author Abel Herrero Gómez (abeherr)
+ * Twitter: @Abel85985400
+ */
 public class ProgressPersonalizado {
 
     private static ProgressPersonalizado progress = null;

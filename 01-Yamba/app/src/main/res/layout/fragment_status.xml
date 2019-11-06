@@ -27,6 +27,15 @@
         android:background="@drawable/edittext_round_corners"
         android:hint="@string/hint_tweet" />
 
+    <TextView
+        android:id="@+id/textContador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="40dp"
+        android:text=""
+        android:textSize="20sp" />
+
     <Button
         android:id="@+id/buttonTweet"
         android:layout_width="fill_parent"

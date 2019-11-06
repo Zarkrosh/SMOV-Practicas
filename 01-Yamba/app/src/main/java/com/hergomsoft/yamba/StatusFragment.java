@@ -8,6 +8,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,13 +26,22 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-
-public class StatusFragment extends Fragment implements View.OnClickListener {
+/**
+ * @author Abel Herrero Gómez (abeherr)
+ * Twitter: @Abel85985400
+ */
+public class StatusFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private static final String TAG = "StatusFragment";
 
+    private static final int MAX_CHARS = 280;
+    private static final int LIMIT_WARNING_CHARS = 15;
+
     private EditText editStatus;
     private Button buttonTweet;
+
+    // Contador de caracteres
+    private TextView textContador;
 
     private Twitter twitter;
 
@@ -52,8 +63,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
 
         // Enlaza views
         editStatus = (EditText) view.findViewById(R.id.editStatus);
+        editStatus.addTextChangedListener(this);
         buttonTweet = (Button) view.findViewById(R.id.buttonTweet);
         buttonTweet.setOnClickListener(this);
+        textContador = (TextView) view.findViewById(R.id.textContador);
+        textContador.setText(Integer.toString(MAX_CHARS));
+        textContador.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MAX_CHARS)}); // Limite de caracteres
 
         // Devuelve la vista personalizada
         return view;
@@ -73,6 +88,29 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
 
         // Realiza el envío del estado
         new StatusTask().execute(status);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // No se usa
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // No se usa
+    }
+
+    @Override
+    public void afterTextChanged(Editable statusText) {
+        int count = MAX_CHARS - statusText.length();
+        textContador.setText(Integer.toString(count));
+        if(count == 0) {
+            textContador.setTextColor(getResources().getColor(R.color.colorContadorLleno));
+        } else if(count < LIMIT_WARNING_CHARS) {
+            textContador.setTextColor(getResources().getColor(R.color.colorContadorAviso));
+        } else {
+            textContador.setTextColor(getResources().getColor(R.color.colorContadorBien));
+        }
     }
 
     /**

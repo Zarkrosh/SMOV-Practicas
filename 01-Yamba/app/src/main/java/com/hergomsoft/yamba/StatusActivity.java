@@ -1,24 +1,13 @@
 package com.hergomsoft.yamba;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
-
+/**
+ * @author Abel Herrero Gómez (abeherr)
+ * Twitter: @Abel85985400
+ */
 public class StatusActivity extends AppCompatActivity  {
 
     @Override
