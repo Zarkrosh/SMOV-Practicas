@@ -67,8 +67,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener, Te
         buttonTweet = (Button) view.findViewById(R.id.buttonTweet);
         buttonTweet.setOnClickListener(this);
         textContador = (TextView) view.findViewById(R.id.textContador);
-        textContador.setText(Integer.toString(MAX_CHARS));
         textContador.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MAX_CHARS)}); // Limite de caracteres
+        actualizaContadorCaracteres(editStatus.getText().toString());
 
         // Devuelve la vista personalizada
         return view;
@@ -102,7 +102,11 @@ public class StatusFragment extends Fragment implements View.OnClickListener, Te
 
     @Override
     public void afterTextChanged(Editable statusText) {
-        int count = MAX_CHARS - statusText.length();
+        actualizaContadorCaracteres(statusText.toString());
+    }
+
+    private void actualizaContadorCaracteres(String texto) {
+        int count = MAX_CHARS - texto.length();
         textContador.setText(Integer.toString(count));
         if(count == 0) {
             textContador.setTextColor(getResources().getColor(R.color.colorContadorLleno));
@@ -178,6 +182,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener, Te
                 case RESULTADO_CORRECTO:
                     snack.setText(getResources().getString(R.string.resultado_correcto));
                     snack_text.setTextColor(Color.BLACK);
+                    // Borra el texto del tweet actual para por si quiere enviar otro
+                    editStatus.setText("");
                     break;
                 case RESULTADO_SIN_CONEXION:
                     snack.setText(getResources().getString(R.string.resultado_sin_conexion));

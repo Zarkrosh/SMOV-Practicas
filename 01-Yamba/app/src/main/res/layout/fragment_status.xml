@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".StatusActivity">
 
+    <!-- Titulo de la pantalla -->
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,18 +16,7 @@
         android:text="@string/title_status"
         android:textSize="30sp" />
 
-    <EditText
-        android:id="@+id/editStatus"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="20dp"
-        android:gravity="top"
-        android:maxLength="280"
-        android:padding="10dp"
-        android:background="@drawable/edittext_round_corners"
-        android:hint="@string/hint_tweet" />
-
+    <!-- Contador de caracteres restantes -->
     <TextView
         android:id="@+id/textContador"
         android:layout_width="wrap_content"
@@ -36,6 +26,23 @@
         android:text=""
         android:textSize="20sp" />
 
+    <!-- Campo de texto del tweet -->
+    <EditText
+        android:id="@+id/editStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="top"
+        android:maxLength="280"
+        android:padding="10dp"
+        android:background="@drawable/edittext_round_corners"
+        android:hint="@string/hint_tweet" />
+
+    <!-- Botón de enviar tweet -->
     <Button
         android:id="@+id/buttonTweet"
         android:layout_width="fill_parent"
