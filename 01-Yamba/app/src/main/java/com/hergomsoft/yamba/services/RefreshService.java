@@ -1,19 +1,15 @@
 package com.hergomsoft.yamba.services;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.IBinder;
+import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.hergomsoft.yamba.R;
-import com.hergomsoft.yamba.db.DBHelper;
 import com.hergomsoft.yamba.db.StatusContract;
 
 import java.util.List;
@@ -24,16 +20,18 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+/**
+ * @author Abel Herrero Gómez (abeherr)
+ * Twitter: @Abel85985400
+ * Access token: 1179828768250224640-gxEUiFvyX1KWd7b377UrABBbw4woEQ
+ * Access token secret: qyliVoOnz0aNUKQRo1Dah1xCVudrbAPGgM4ql6W5nOkB0
+ */
 public class RefreshService extends IntentService {
 
     static final String TAG = "RefreshService";
 
-    static final int DELAY = 30000; // Medio minuto de espera entre actualizaciones
+    static final int DELAY = 30000; // Espera entre actualizaciones (ms)
     private boolean runFlag = false;
-
-    // Base de datos
-    DBHelper dbHelper;
-    SQLiteDatabase db;
 
     public RefreshService() {
         super(TAG);
@@ -43,8 +41,6 @@ public class RefreshService extends IntentService {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreated");
-
-        dbHelper = new DBHelper(this);
     }
 
     @Override
@@ -78,8 +74,6 @@ public class RefreshService extends IntentService {
                 try {
                     List<Status> timeline = twitter.getHomeTimeline();
 
-                    // Abre la conexión con la BD
-                    db = dbHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
                     // Guarda los status en la BD
                     for (Status status : timeline) {
@@ -88,12 +82,18 @@ public class RefreshService extends IntentService {
                         values.put(StatusContract.Column.USER, status.getUser().getName());
                         values.put(StatusContract.Column.MESSAGE, status.getText());
                         values.put(StatusContract.Column.CREATED_AT, status.getCreatedAt().getTime());
-                        // Si hay conflicto ignora el insert
-                        db.insertWithOnConflict(StatusContract.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+                        Uri uri = getContentResolver().insert(StatusContract.CONTENT_URI, values);
                     }
 
-                    // Cierra la conexión
-                    db.close();
+                    // Notifica de actualizaciones (si las hay)
+                    if (timeline.size() > 0) {
+                        Intent in = new Intent("com.hergomsoft.yamba.action.NEW_STATUSES");
+                        Bundle bundle = new Bundle();
+                        bundle.putString( "count", String.valueOf(timeline.size()));
+                        in.putExtras(bundle);
+                        sendBroadcast(in);
+                    }
                 } catch (TwitterException e) {
                     Log.e(TAG, "Fallo al obtener el timeline", e);
                 }

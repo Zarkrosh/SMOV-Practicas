@@ -15,6 +15,9 @@
     <string name="resultado_desconocido">Error al enviar el tweet. Comprueba las credenciales</string>
     <string name="resultado_sin_autenticar">Los tokens no están configurados</string>
 
+    <!-- Pantalla de detalles de tweet -->
+    <string name="idTweet">id</string>
+
     <!-- Menú -->
     <string name="extraMensaje">mensaje</string>
     <string name="action_settings">Configuración</string>

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -12,19 +13,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".services.RefreshService"
-            android:enabled="true"
-            android:exported="true"></service>
+        <activity android:name=".DetailsActivity"></activity>
+
+        <receiver android:name=".receivers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.NotificationReceiver">
+            <intent-filter>
+                <action android:name="com.hergomsoft.yamba.action.NEW_STATUSES" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.NetworkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".StatusActivity" />
         <activity android:name=".SettingsActivity" />
+
+        <service
+            android:name=".services.RefreshService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <provider
+            android:name=".providers.StatusProvider"
+            android:authorities="com.hergomsoft.yamba.providers.StatusProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
