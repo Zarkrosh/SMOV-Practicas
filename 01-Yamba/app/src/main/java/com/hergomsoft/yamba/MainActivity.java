@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.hergomsoft.yamba.services.RefreshService;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_tweet:
                 startActivity(new Intent(this, StatusActivity.class));
+                return true;
+            case R.id.itemServiceStart:
+                startService(new Intent(this, RefreshService.class));
+                return true;
+            case R.id.itemServiceStop:
+                stopService(new Intent(this, RefreshService.class));
                 return true;
             default:
                 return false;

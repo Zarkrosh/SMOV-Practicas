@@ -20,6 +20,8 @@
     <string name="action_settings">Configuración</string>
     <string name="tweet">Nuevo tweet</string>
     <string name="purge">Borrar</string>
+    <string name="titleServiceStart">Iniciar servicio</string>
+    <string name="titleServiceStop">Detener servicio</string>
 
     <!-- Preferencias -->
     <string name="summaryAccessToken">Introduce el Access Token</string>
