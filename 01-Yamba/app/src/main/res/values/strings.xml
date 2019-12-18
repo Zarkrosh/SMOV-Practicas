@@ -13,5 +13,20 @@
     <string name="resultado_limite_excedido">Se ha excedido el límite temporal de tweets</string>
     <string name="resultado_recurso_no_encontrado">No se ha encontrado el recurso requerido</string>
     <string name="resultado_desconocido">Error al enviar el tweet. Comprueba las credenciales</string>
+    <string name="resultado_sin_autenticar">Los tokens no están configurados</string>
+
+    <!-- Menú -->
+    <string name="extraMensaje">mensaje</string>
+    <string name="action_settings">Configuración</string>
+    <string name="tweet">Nuevo tweet</string>
+    <string name="purge">Borrar</string>
+
+    <!-- Preferencias -->
+    <string name="summaryAccessToken">Introduce el Access Token</string>
+    <string name="titleAccessToken">Access Token</string>
+    <string name="keyAccessToken">accessToken</string>
+    <string name="summaryAccessTokenSecret">Introduce el Access Token Secret</string>
+    <string name="titleAccessTokenSecret">Access Token Secret</string>
+    <string name="keyAccessTokenSecret">accessTokenSecret</string>
 
 </resources>
