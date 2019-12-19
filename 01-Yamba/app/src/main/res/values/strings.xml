@@ -17,6 +17,8 @@
 
     <!-- Pantalla de detalles de tweet -->
     <string name="idTweet">id</string>
+    <string name="hintRespuesta">Responder al tweet</string>
+    <string name="enviarRespuesta">Enviar</string>
 
     <!-- Menú -->
     <string name="extraMensaje">mensaje</string>

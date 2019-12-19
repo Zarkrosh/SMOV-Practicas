@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:paddingBottom="0dp">
 
     <TextView android:id="@+id/list_item_text_id"
         android:layout_width="0dp"
@@ -15,6 +17,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="Usuario"
+        android:textColor="@android:color/black"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -25,14 +28,24 @@
         android:layout_alignBottom="@+id/list_item_text_user"
         android:layout_alignParentRight="true"
         android:text="Hace 10 minutos"
+        android:textColor="@android:color/black"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <TextView
         android:id="@+id/list_item_text_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/list_item_text_created_at"
-        android:text="Tweet."
+        android:layout_marginTop="5dp"
+        android:text="Tweet"
+        android:textColor="@android:color/black"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/list_item_text_message"
+        android:color="@android:color/black" />
 
 </RelativeLayout>

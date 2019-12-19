@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="colorApp">#3BBDFA</color>
+
     <color name="colorContadorBien">#47FF47</color>
     <color name="colorContadorAviso">#FF8800</color>
     <color name="colorContadorLleno">#FF0000</color>

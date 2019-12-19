@@ -8,7 +8,28 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DBHelper.class.getSimpleName();
-    private final String CREATE_TABLE = "CREATE TABLE %s (%s INT PRIMARY KEY, %s TEXT, %s TEXT, %s INT)";
+
+    /* ESTRUCTURA DE LA BD:
+        - ID                INT PRIMARY KEY
+        - USER              TEXT
+        - SCREEN_NAME       TEXT
+        - MESSAGE           TEXT
+        - CREATED_AT        INT
+        - FAVORITED         INT (1,0)
+        - RETWEETED         INT (1,0)
+        - FAVORITES_COUNT   INT
+        - RETWEETS_COUNT    INT
+     */
+    private final String CREATE_TABLE = "CREATE TABLE %s (" +
+            "%s INT PRIMARY KEY, " +
+            "%s TEXT, " +
+            "%s TEXT, " +
+            "%s TEXT, " +
+            "%s INT, " +
+            "%s INT, " +
+            "%s INT, " +
+            "%s INT, " +
+            "%s INT)"; // TODO
     private final String DROP_TABLE = "DROP TABLE IF EXISTS %s";
 
     // Constructor
@@ -19,8 +40,17 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // En la primera ejecución crea la tabla
-        String sql = String.format(CREATE_TABLE, StatusContract.TABLE, StatusContract.Column.ID,
-                StatusContract.Column.USER, StatusContract.Column.MESSAGE, StatusContract.Column.CREATED_AT);
+        String sql = String.format(CREATE_TABLE, StatusContract.TABLE,
+                StatusContract.Column.ID,
+                StatusContract.Column.USER,
+                StatusContract.Column.SCREEN_NAME,
+                StatusContract.Column.MESSAGE,
+                StatusContract.Column.CREATED_AT,
+                StatusContract.Column.FAVORITED,
+                StatusContract.Column.RETWEETED,
+                StatusContract.Column.FAVORITES_COUNT,
+                StatusContract.Column.RETWEETS_COUNT
+        );
 
         Log.d(TAG, "onCreate con SQL: " + sql);
         db.execSQL(sql);
@@ -28,8 +58,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Aqui irían las sentencias del tipo ALTER TABLE, de momento lo hacemos mas sencillo...
-
         // Borramos la vieja base de datos
         db.execSQL(String.format(DROP_TABLE, StatusContract.TABLE));
 

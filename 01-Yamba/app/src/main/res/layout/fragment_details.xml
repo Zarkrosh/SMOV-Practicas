@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutDetails"
     android:layout_width="match_parent"
@@ -7,12 +7,151 @@
     android:orientation="vertical"
     tools:context=".DetailsActivity">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <RelativeLayout android:id="@+id/layoutUsuario"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Detalles"
-        android:textSize="30sp" />
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp">
 
-</LinearLayout>
+        <ImageView android:id="@+id/imagenUsuario"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_user" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imagenUsuario"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/nombreUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+            <TextView android:id="@+id/nombrePantallaUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView android:id="@+id/textoTweet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_below="@id/layoutUsuario"
+        android:textSize="22sp" />
+
+    <LinearLayout android:id="@+id/layoutEstadisticas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoTweet"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView android:id="@+id/numeroFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp" />
+
+        <TextView android:id="@+id/numeroRetweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <View android:id="@+id/separador1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/layoutEstadisticas"
+        android:background="@color/colorApp" />
+
+    <LinearLayout android:id="@+id/layoutBotones"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/separador1"
+        android:orientation="horizontal">
+
+        <ImageButton android:id="@+id/botonRetweet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/retweet_off"
+            android:background="@android:color/transparent" />
+
+        <ImageButton android:id="@+id/botonMeGusta"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_off"
+            android:background="@android:color/transparent" />
+
+        <ImageButton android:id="@+id/botonCompartir"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/share"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <View android:id="@+id/separador2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/layoutBotones"
+        android:background="@color/colorApp" />
+
+    <TextView android:id="@+id/listaRespuestas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separador2"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="Lista de respuestas"
+        android:textSize="30sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/layoutRespuesta"
+        android:background="@color/colorApp" />
+
+    <LinearLayout android:id="@+id/layoutRespuesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <EditText android:id="@+id/textoRespuesta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:hint="@string/hintRespuesta" />
+
+        <Button android:id="@+id/botonEnviar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="@drawable/button_round_corners"
+            android:text="@string/enviarRespuesta" />
+
+    </LinearLayout>
+
+</RelativeLayout>

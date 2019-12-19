@@ -77,11 +77,17 @@ public class RefreshService extends IntentService {
                     ContentValues values = new ContentValues();
                     // Guarda los status en la BD
                     for (Status status : timeline) {
+                        Log.d(TAG, "ID:" + status.getId());
                         values.clear();
                         values.put(StatusContract.Column.ID, status.getId());
                         values.put(StatusContract.Column.USER, status.getUser().getName());
+                        values.put(StatusContract.Column.SCREEN_NAME, status.getUser().getScreenName());
                         values.put(StatusContract.Column.MESSAGE, status.getText());
                         values.put(StatusContract.Column.CREATED_AT, status.getCreatedAt().getTime());
+                        values.put(StatusContract.Column.FAVORITED, status.isFavorited());
+                        values.put(StatusContract.Column.RETWEETED, status.isRetweetedByMe());
+                        values.put(StatusContract.Column.FAVORITES_COUNT, status.getFavoriteCount());
+                        values.put(StatusContract.Column.RETWEETS_COUNT, status.getRetweetCount());
 
                         Uri uri = getContentResolver().insert(StatusContract.CONTENT_URI, values);
                     }
