@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="interspaceButtonsMain">30dp</dimen>
+    <dimen name="textSizeButtonMain">30sp</dimen>
+    <dimen name="widthButtonMain">250dp</dimen>
+    <dimen name="heightButtonMain">50dp</dimen>
+</resources>
