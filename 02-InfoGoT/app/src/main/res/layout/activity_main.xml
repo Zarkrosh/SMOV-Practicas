@@ -7,19 +7,29 @@
     <TextView android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
         android:text="@string/app_name"
         android:textSize="60sp"
         android:textStyle="bold"
-        android:textColor="@android:color/holo_blue_dark"/>
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/appTitle"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/description"
+        android:textSize="20sp"/>
 
     <Button android:id="@+id/btnBooks"
         android:layout_width="@dimen/widthButtonMain"
         android:layout_height="@dimen/heightButtonMain"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_below="@id/appTitle"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/description"
         android:text="@string/books"
         android:textSize="@dimen/textSizeButtonMain"
         android:textColor="@android:color/white"

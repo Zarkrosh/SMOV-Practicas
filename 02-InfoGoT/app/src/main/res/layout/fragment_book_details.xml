@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookDetailsActivity">
+
+
+    <TextView android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="A Knight of the Seven Kingdoms"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="18sp"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="2sp" />
+
+    <View android:id="@+id/nameSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/name"
+        android:background="@android:color/black" />
+
+    <TableLayout android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameSeparator"
+        android:layout_margin="15dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/sReleaseDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:text="@string/releaseDate"
+                android:textStyle="bold"
+                android:textSize="@dimen/detailsTextSize" />
+
+            <TextView android:id="@+id/releaseDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:text="06/10/2015"
+                android:textSize="@dimen/detailsTextSize" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/sAuthors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:text="@string/authors"
+                android:textStyle="bold"
+                android:textSize="@dimen/detailsTextSize" />
+
+            <TextView android:id="@+id/authors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:text="George R. R. Martin"
+                android:textSize="@dimen/detailsTextSize" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <View android:id="@+id/chSeparator1"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/details"
+        android:background="@android:color/black" />
+
+    <TextView android:id="@+id/listOfCharacters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chSeparator1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/listOfCharacters"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary" />
+
+    <View android:id="@+id/chSeparator2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/listOfCharacters"
+        android:background="@android:color/black" />
+
+    <ListView android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chSeparator2" />
+
+</RelativeLayout>

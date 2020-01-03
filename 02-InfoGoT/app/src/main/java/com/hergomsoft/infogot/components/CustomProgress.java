@@ -1,4 +1,4 @@
-package com.hergomsoft.infogot;
+package com.hergomsoft.infogot.components;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.hergomsoft.infogot.R;
 
 public class CustomProgress {
 

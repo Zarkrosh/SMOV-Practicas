@@ -4,4 +4,6 @@
     <dimen name="textSizeButtonMain">30sp</dimen>
     <dimen name="widthButtonMain">250dp</dimen>
     <dimen name="heightButtonMain">50dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="detailsTextSize">20sp</dimen>
 </resources>

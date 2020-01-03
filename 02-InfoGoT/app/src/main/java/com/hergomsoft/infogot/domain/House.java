@@ -1,4 +1,4 @@
-package com.hergomsoft.infogot.dominio;
+package com.hergomsoft.infogot.domain;
 
 import org.json.JSONArray;
 import org.json.JSONException;

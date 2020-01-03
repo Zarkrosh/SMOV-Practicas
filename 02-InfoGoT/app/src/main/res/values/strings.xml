@@ -1,9 +1,30 @@
 <resources>
+
+    <!-- Main -->
     <string name="app_name">InfoGoT</string>
+    <string name="description">Tiny app of info about the Game of Thrones world</string>
     <string name="credits">Abel Herrero Gómez\nSergio Alonso Pascual</string>
-    <string name="books">Libros</string>
-    <string name="characters">Personajes</string>
-    <string name="houses">Casas</string>
-    <string name="downloadError">Ocurrió un error al descargar los datos</string>
-    <string name="downloadMessage">Descargando datos</string>
+    <string name="books">Books</string>
+    <string name="characters">Characters</string>
+    <string name="houses">Houses</string>
+    <string name="downloadError">Download failed. Check your Internet connection</string>
+    <string name="downloadMessage">Downloading data...</string>
+
+    <!-- Lists -->
+    <string name="bookList">List of books</string>
+    <string name="charactersList">List of characters</string>
+    <string name="housesList">List of houses</string>
+
+    <!-- Book details -->
+    <string name="idBook">idBook</string>
+    <string name="releaseDate">Release date</string>
+    <string name="authors">Authors</string>
+    <string name="listOfCharacters">List of characters</string>
+
+    <!-- Character details -->
+    <string name="idCharacter">idCharacter</string>
+
+    <!-- House details -->
+    <string name="idHouse">idHouse</string>
+
 </resources>

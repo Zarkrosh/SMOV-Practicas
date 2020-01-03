@@ -6,25 +6,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.hergomsoft.infogot.components.CustomProgress;
+
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHouses.setOnClickListener(this);
 
         // Downloads data from API if it's not already downloaded
-        new DownloadTask().execute();
+        //new DownloadTask().execute();
     }
 
     @Override
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i;
         switch (v.getId()) {
             case R.id.btnBooks:
-                i = new Intent(this, BooksActivity.class);
+                i = new Intent(this, BookListActivity.class);
                 startActivity(i);
                 break;
             case R.id.btnCharacters:
@@ -176,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Thread.sleep(1000);
             } catch(InterruptedException e) {}
 
-            return false;
+            return true;
         }
 
         @Override
