@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 public class InfoGotContract {
 
-    public static final String CONTENT_AUTHORITY ="com.hergomsoft.imfogot.provider";
+    public static final String CONTENT_AUTHORITY ="com.hergomsoft.infogot";
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     /**
      * A list of possible paths that will be appended to the base URI for each of the different
@@ -41,7 +41,6 @@ public class InfoGotContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_RELEASED= "released";
         public static final String COLUMN_NPAGES = "npages";
-        public static final String COLUMN_IDB="idb";
 
         // Define a function to build a URI to find a specific BOOK by it's identifier
         public static Uri buildBookUri(long id){
@@ -85,7 +84,6 @@ public class InfoGotContract {
         // Define the table schema
         public static final String TABLE_NAME = "character";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_IDC= "idc";
         public static final String COLUMN_GENDER= "gender";
         public static final String COLUMN_CULTURE= "culture";
         public static final String COLUMN_BORN= "born";
@@ -143,6 +141,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class MemberEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -164,6 +163,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class HouseEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -178,7 +178,6 @@ public class InfoGotContract {
         // Define the table schema
         public static final String TABLE_NAME = "house";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_IDH= "idh";
         public static final String COLUMN_REGION= "region";
         public static final String COLUMN_WORDS = "words";
         public static final String COLUMN_FOUDED= "founded";
@@ -194,6 +193,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class BranchEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -215,6 +215,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class HouseTitleEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -236,6 +237,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class SeatEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -257,6 +259,7 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
     public static final class AncestralWeaponEntry implements BaseColumns {
         // Content URI represents the base location for the table
         public static final Uri CONTENT_URI =
@@ -278,4 +281,5 @@ public class InfoGotContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
 }

@@ -56,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addBookTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.BookEntry.TABLE_NAME + " (" +
-                        InfoGotContract.BookEntry.COLUMN_IDB + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.BookEntry._ID + " INTEGER PRIMARY KEY, " +
                         InfoGotContract.BookEntry.COLUMN_NAME + " TEXT, "+
                         InfoGotContract.BookEntry.COLUMN_RELEASED+ "TEXT, "+
                         InfoGotContract.BookEntry.COLUMN_NPAGES+"INTEGER);"
@@ -66,17 +66,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addAppearanceTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.AppearanceEntry.TABLE_NAME + " (" +
-                        InfoGotContract.AppearanceEntry.COLUMN_IDB + " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.BookEntry.TABLE_NAME+"("+InfoGotContract.BookEntry.COLUMN_IDB+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.AppearanceEntry.COLUMN_IDC + " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry.COLUMN_IDC+ ") ON DELETE CASCADE);"
+                        InfoGotContract.AppearanceEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.AppearanceEntry.COLUMN_IDB + " INTEGER " +
+                        "REFERENCES " +InfoGotContract.BookEntry.TABLE_NAME+"("+InfoGotContract.BookEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.AppearanceEntry.COLUMN_IDC + " INTEGER " +
+                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE);"
         );
     }
 
     private void addCharacterTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" +
-                        InfoGotContract.CharacterEntry.COLUMN_IDC + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.CharacterEntry._ID + " INTEGER PRIMARY KEY, " +
                         InfoGotContract.CharacterEntry.COLUMN_NAME + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_GENDER + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_CULTURE + " TEXT, " +
@@ -86,46 +87,49 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.CharacterEntry.COLUMN_FATHER + "INTEGER, " +
                         InfoGotContract.CharacterEntry.COLUMN_MOTHER + "INTEGER, " +
                         "FOREIGN KEY (" + InfoGotContract.CharacterEntry.COLUMN_SPOUSE+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ ")," +
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.CharacterEntry.COLUMN_FATHER+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ ")," +
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.CharacterEntry.COLUMN_MOTHER+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ "));"
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ "));"
         );
     }
 
     private void addCharacterTitleTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.CharacterTitleEntry.TABLE_NAME + " (" +
-                        InfoGotContract.CharacterTitleEntry.COLUMN_IDC + " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry.COLUMN_IDC+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.CharacterTitleEntry.COLUMN_TITLE + " TEXT PRIMARY KEY);"
+                        InfoGotContract.CharacterTitleEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.CharacterTitleEntry.COLUMN_IDC + " INTEGER " +
+                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.CharacterTitleEntry.COLUMN_TITLE + " TEXT);"
         );
     }
 
     private void addAliasTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.AliasEntry.TABLE_NAME + " (" +
-                        InfoGotContract.AliasEntry.COLUMN_IDC+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry.COLUMN_IDC+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.AliasEntry.COLUMN_ALIAS+ " TEXT PRIMARY KEY);"
+                        InfoGotContract.AliasEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.AliasEntry.COLUMN_IDC+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.AliasEntry.COLUMN_ALIAS+ " TEXT);"
         );
     }
 
     private void addMemberTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.MemberEntry.TABLE_NAME + " (" +
-                        InfoGotContract.MemberEntry.COLUMN_IDH+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.MemberEntry.COLUMN_IDC + " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry.COLUMN_IDC+ ") ON DELETE CASCADE);"
+                        InfoGotContract.MemberEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.MemberEntry.COLUMN_IDH+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.MemberEntry.COLUMN_IDC + " INTEGER " +
+                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE);"
         );
     }
 
     private void addHouseTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.HouseEntry.TABLE_NAME + " (" +
-                        InfoGotContract.HouseEntry.COLUMN_IDH + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.HouseEntry._ID + " INTEGER PRIMARY KEY, " +
                         InfoGotContract.HouseEntry.COLUMN_NAME + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_REGION + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_WORDS + " TEXT, " +
@@ -137,50 +141,54 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.HouseEntry.COLUMN_HEIR + "INTEGER, " +
                         InfoGotContract.HouseEntry.COLUMN_FOUNDER + "INTEGER, " +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_OVERLORD+ ") " +
-                        "REFERENCES " + InfoGotContract.HouseEntry.TABLE_NAME + " (" + InfoGotContract.HouseEntry.COLUMN_IDH+ ")," +
+                        "REFERENCES " + InfoGotContract.HouseEntry.TABLE_NAME + " (" + InfoGotContract.HouseEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_LORD+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ ")," +
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_HEIR+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ ")," +
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_FOUNDER+ ") " +
-                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry.COLUMN_IDC+ "));"
+                        "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ "));"
         );
     }
 
     private void addHouseTitlesTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.HouseTitleEntry.TABLE_NAME + " (" +
-                        InfoGotContract.HouseTitleEntry.COLUMN_IDH+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.HouseTitleEntry.COLUMN_TITLE+ " TEXT PRIMARY KEY);"
+                        InfoGotContract.HouseTitleEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.HouseTitleEntry.COLUMN_IDH+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.HouseTitleEntry.COLUMN_TITLE+ " TEXT);"
         );
     }
 
     private void addSeatTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.SeatEntry.TABLE_NAME + " (" +
-                        InfoGotContract.SeatEntry.COLUMN_IDH+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.SeatEntry.COLUMN_SEAT+ " TEXT PRIMARY KEY);"
+                        InfoGotContract.SeatEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.SeatEntry.COLUMN_IDH+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.SeatEntry.COLUMN_SEAT+ " TEXT);"
         );
     }
 
     private void addAncestralWeaponTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.AncestralWeaponEntry.TABLE_NAME + " (" +
-                        InfoGotContract.AncestralWeaponEntry.COLUMN_IDH+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON+ " TEXT PRIMARY KEY);"
+                        InfoGotContract.AncestralWeaponEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.AncestralWeaponEntry.COLUMN_IDH+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON+ " TEXT);"
         );
     }
 
     private void addBranchTable(SQLiteDatabase db){
         db.execSQL(
                 "CREATE TABLE " + InfoGotContract.BranchEntry.TABLE_NAME + " (" +
-                        InfoGotContract.BranchEntry.COLUMN_IDH+ " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE, "+
-                        InfoGotContract.BranchEntry.COLUMN_IDHB + " INTEGER PRIMARY KEY " +
-                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry.COLUMN_IDH+ ") ON DELETE CASCADE);"
+                        InfoGotContract.BranchEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.BranchEntry.COLUMN_IDH+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.BranchEntry.COLUMN_IDHB + " INTEGER " +
+                        "REFERENCES " +InfoGotContract.HouseEntry.TABLE_NAME+"("+InfoGotContract.HouseEntry._ID+ ") ON DELETE CASCADE);"
         );
     }
 }
