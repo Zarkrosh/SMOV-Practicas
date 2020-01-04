@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3BBDFA</color>
+
+    <color name="colorBook">#75FAB43B</color>
+    <color name="colorCharacter">#F44336</color>
+    <color name="colorHouse">#A941FA3B</color>
+
 </resources>

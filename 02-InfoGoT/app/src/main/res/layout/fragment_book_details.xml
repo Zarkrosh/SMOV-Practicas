@@ -37,9 +37,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView android:id="@+id/sReleaseDate"
+            <TextView android:id="@+id/sCover"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:text="@string/cover"
+                android:textStyle="bold"
+                android:textSize="@dimen/detailsTextSize" />
+
+            <ImageView android:id="@+id/cover"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:maxHeight="@dimen/maxHeightCover"
+                android:gravity="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/sReleaseDate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.4"
                 android:gravity="center"
                 android:text="@string/releaseDate"
@@ -48,7 +70,7 @@
 
             <TextView android:id="@+id/releaseDate"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.6"
                 android:gravity="center"
                 android:text="06/10/2015"

@@ -2,7 +2,7 @@
 
     <!-- Main -->
     <string name="app_name">InfoGoT</string>
-    <string name="description">Tiny app of info about the Game of Thrones world</string>
+    <string name="description">Tiny info app about the Game of Thrones world</string>
     <string name="credits">Abel Herrero Gómez\nSergio Alonso Pascual</string>
     <string name="books">Books</string>
     <string name="characters">Characters</string>
@@ -17,6 +17,7 @@
 
     <!-- Book details -->
     <string name="idBook">idBook</string>
+    <string name="cover">Cover</string>
     <string name="releaseDate">Release date</string>
     <string name="authors">Authors</string>
     <string name="listOfCharacters">List of characters</string>
@@ -26,5 +27,21 @@
 
     <!-- House details -->
     <string name="idHouse">idHouse</string>
+    <string name="coat_of_arms">Coat of arms</string>
+    <string name="words">Words</string>
+    <string name="region">Region</string>
+    <string name="current_lord">Current lord</string>
+    <string name="overlord">Overlord</string>
+    <string name="heir">Heir</string>
+    <string name="founded">Founded</string>
+    <string name="founder">Founder</string>
+    <string name="died_out">Died out</string>
+    <string name="titles">Titles</string>
+    <string name="seats">Seats</string>
+    <string name="ancestral_weapons">Ancestral weapons</string>
+    <string name="cadet_branches">Cadet branches</string>
+    <string name="sworn_members">Sworn members</string>
+
+
 
 </resources>

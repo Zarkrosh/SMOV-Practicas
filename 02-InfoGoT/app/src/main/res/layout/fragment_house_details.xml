@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BookDetailsActivity">
+
+    <TextView android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="House Stark of Winterfell"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="18sp"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="2sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Coat of arms -->
+            <TextView android:id="@+id/sCoat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/coat_of_arms"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/detailsTextSize" />
+
+            <ImageView android:id="@+id/coat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/marginCoatImage"
+                android:layout_marginEnd="@dimen/marginCoatImage"
+                android:maxHeight="@dimen/maxHeightCover"
+                android:gravity="center" />
+
+            <TextView android:id="@+id/coatDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="A running grey direwolf, on an ice-white field"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <!-- Details -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp">
+
+                <!-- Words -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sWords"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/words"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/words"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Winter is coming"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Region -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sRegion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/region"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/region"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="The North"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Current lord (if any) -->
+                <TableRow android:id="@+id/rowCurrentLord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sCurrentLord"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/current_lord"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/currentLord"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Overlord -->
+                <TableRow android:id="@+id/rowOverlord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sOverlord"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/overlord"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/overlord"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="House Baratheon of King's Landing"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="22sp" />
+                </TableRow>
+
+                <!-- Heir -->
+                <TableRow android:id="@+id/rowHeir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sHeir"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/heir"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/heir"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp" />
+                </TableRow>
+
+                <!-- Founded -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sFounded"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/founded"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/founded"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Age of Heroes"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Founder -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sFounder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/founder"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/founder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Brandon Stark"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp" />
+                </TableRow>
+
+                <!-- Died out -->
+                <TableRow android:id="@+id/rowDiedOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:id="@+id/sDiedOut"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/died_out"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/diedOut"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp" />
+                </TableRow>
+
+
+            </TableLayout>
+
+            <!-- Titles (gone if none) -->
+            <LinearLayout android:id="@+id/layoutTitles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/titles"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/titles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="King in the North\nLord of Winterfell\nWarden of the North\nKing of the Trident"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!-- Seats (gone if none) -->
+            <LinearLayout android:id="@+id/layoutSeats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/seats"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/seats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Scattered (formerly Winterfell)"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!-- Ancestral weapons (gone if none) -->
+            <LinearLayout android:id="@+id/layoutAncestralWeapons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/ancestral_weapons"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/ancestralWeapons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Ice"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!-- Cadet branches (gone if none) -->
+            <LinearLayout android:id="@+id/layoutCadetBranches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/cadet_branches"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <com.hergomsoft.infogot.components.NonScrollListView
+                    android:id="@+id/cadetBranches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </com.hergomsoft.infogot.components.NonScrollListView>
+
+            </LinearLayout>
+
+            <!-- Sworn members (gone if none) -->
+            <LinearLayout android:id="@+id/layoutSwornMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/sworn_members"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <com.hergomsoft.infogot.components.NonScrollListView
+                    android:id="@+id/swornMembers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </com.hergomsoft.infogot.components.NonScrollListView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

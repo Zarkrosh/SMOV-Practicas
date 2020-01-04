@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.ListFragment;
 
@@ -18,9 +19,7 @@ public class BookListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         // TODO Obtener datos desde la BD
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Asdf" };
+        String[] values = new String[] { "Juego de tronos","Choque de reyes","Tormenta de espadas","Festín de cuervos","Danza de dragones","Vientos de invierno","Sueño de primavera" };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, values);
 
@@ -29,7 +28,11 @@ public class BookListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_books, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        TextView title = (TextView) view.findViewById(R.id.listTitle);
+        title.setText(getResources().getString(R.string.bookList));
+
         return view;
     }
 

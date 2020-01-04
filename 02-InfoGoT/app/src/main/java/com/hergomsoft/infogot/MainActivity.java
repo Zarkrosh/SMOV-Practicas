@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.btnCharacters:
-                i = new Intent(this, CharactersActivity.class);
+                i = new Intent(this, CharacterListActivity.class);
                 startActivity(i);
                 break;
             case R.id.btnHouses:
-                i = new Intent(this, HousesActivity.class);
+                i = new Intent(this, HouseListActivity.class);
                 startActivity(i);
                 break;
         }
