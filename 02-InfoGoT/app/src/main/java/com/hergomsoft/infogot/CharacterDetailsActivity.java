@@ -13,10 +13,10 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         // ¿Ya está creada?
         if(savedInstanceState == null) {
             // Crea el fragment
-            /*CharacterDetailsFragment fragment = new CharacterDetailsFragment();
+            CharacterDetailsFragment fragment = new CharacterDetailsFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
-                    .commit();*/
+                    .commit();
         }
 
     }

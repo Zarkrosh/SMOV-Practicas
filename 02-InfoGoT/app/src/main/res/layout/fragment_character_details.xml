@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CharacterDetailsActivity">
+
+    <TextView android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Jon Snow"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="18sp"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="2sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView android:id="@+id/characterImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="@dimen/marginCoatImage"
+                android:layout_marginEnd="@dimen/marginCoatImage"
+                android:maxHeight="@dimen/maxHeightCover"
+                android:gravity="center" />
+
+            <!-- Details -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp">
+
+                <!-- Gender -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Gender"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/gender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Male"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Culture -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Culture"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/culture"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Northmen"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Born -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Born"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/born"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="In 283 AC"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Died (if it did) -->
+                <TableRow android:id="@+id/rowDied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Died"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/died"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+                <!-- Father (if it has) -->
+                <TableRow android:id="@+id/rowFather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Father"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/father"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/detailsLinkSize" />
+                </TableRow>
+
+                <!-- Mother (if it has) -->
+                <TableRow android:id="@+id/rowMother"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Mother"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/mother"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsLinkSize" />
+                </TableRow>
+
+                <!-- Spouse (if it has) -->
+                <TableRow android:id="@+id/rowSpouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Spouse"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/spouse"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp" />
+                </TableRow>
+
+                <!-- Played by (if it does) -->
+                <TableRow android:id="@+id/rowPlayedBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/died_out"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detailsTextSize" />
+
+                    <TextView android:id="@+id/playedBy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Kit Harington"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/detailsTextSize" />
+                </TableRow>
+
+
+            </TableLayout>
+
+            <!-- Titles (gone if none) -->
+            <LinearLayout android:id="@+id/layoutTitles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/titles"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/titles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="20dp"
+                    android:text="King in the North\nLord of Winterfell\nWarden of the North\nKing of the Trident"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!-- Aliases (gone if none) -->
+            <LinearLayout android:id="@+id/layoutAliases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Aliases"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/aliases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="20dp"
+                    android:text="Lord Snow\nNed Stark's Bastard\nThe Snow of Winterfell\nThe Crow-Come-Over\nThe 998th Lord Commander of the Night's Watch\nThe Bastard of Winterfell\nThe Black Bastard of the Wall\nLord Crow"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!-- Allegiances (gone if none) -->
+            <LinearLayout android:id="@+id/layoutAllegiances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Allegiances"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <com.hergomsoft.infogot.components.NonScrollListView
+                    android:id="@+id/allegiances"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </com.hergomsoft.infogot.components.NonScrollListView>
+
+            </LinearLayout>
+
+            <!-- Books (gone if none) -->
+            <LinearLayout android:id="@+id/layoutBooks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Books"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <com.hergomsoft.infogot.components.NonScrollListView
+                    android:id="@+id/books"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </com.hergomsoft.infogot.components.NonScrollListView>
+
+            </LinearLayout>
+
+            <!-- TV Series (gone if none) -->
+            <LinearLayout android:id="@+id/layoutTVSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="TV Series"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@android:color/black" />
+
+                <TextView android:id="@+id/tvSeries"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="20dp"
+                    android:text="Season 1\nSeason 2\nSeason 3\nSeason 4\nSeason 5\nSeason 6\nSeason 7\nSeason 8"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

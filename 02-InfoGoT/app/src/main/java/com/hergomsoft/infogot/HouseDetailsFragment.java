@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.hergomsoft.infogot.components.NonScrollListView;
 import com.hergomsoft.infogot.domain.Character;
 import com.hergomsoft.infogot.domain.House;
+import com.hergomsoft.infogot.utils.ScrappingTask;
 
 import org.json.JSONObject;
 
@@ -41,9 +42,7 @@ import java.nio.charset.StandardCharsets;
 public class HouseDetailsFragment extends Fragment {
     private static final String TAG = HouseDetailsFragment.class.getSimpleName();
 
-    private final String GOOGLE_IMAGES_BASE = "https://www.google.es/search?tbm=isch&q=site%3Agameofthrones.fandom.com+";
-
-    private ImageView coat;
+    private ImageView coatImage;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class HouseDetailsFragment extends Fragment {
         // Name of house
         TextView name = (TextView) view.findViewById(R.id.name);
         // Coat of house (image and description)
-        coat = (ImageView) view.findViewById(R.id.coat);
+        coatImage = (ImageView) view.findViewById(R.id.coat);
         TextView coatDescription = (TextView) view.findViewById(R.id.coatDescription);
         // Words
         TextView words = (TextView) view.findViewById(R.id.words);
@@ -95,19 +94,17 @@ public class HouseDetailsFragment extends Fragment {
         LinearLayout layoutSwornMembers = (LinearLayout) view.findViewById(R.id.layoutSwornMembers);
         NonScrollListView swornMembers = (NonScrollListView) view.findViewById(R.id.swornMembers);
 
-        // Scraps first result image in Google Images
+        // Scraps coat of arms image on Google Images
         String debugHouseName = "House Stark of Winterfell";
         try {
-            String url = GOOGLE_IMAGES_BASE + URLEncoder.encode(debugHouseName, StandardCharsets.UTF_8.name());
-            Log.d(TAG, "Scrapping " + url);
-            new ScrappingTask().execute(url);
-        } catch (UnsupportedEncodingException e) {
+            ScrappingTask scrTask = new ScrappingTask(debugHouseName);
+            scrTask.setTargetImageView(coatImage);
+            scrTask.execute();
+        } catch (Exception e) {
             Log.d(TAG, "Scrapping of coat failed: " + e.getMessage());
         }
 
-
         // TODO Configurar vista a partir del modelo
-
 
         // TODO Onclick para mostrar detalles
         // Underline to indicate link
@@ -117,17 +114,17 @@ public class HouseDetailsFragment extends Fragment {
         founder.setPaintFlags(founder.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // TODO Comprobar si no hay
-        if(false) rowCurrentLord.setVisibility(View.GONE);
-        if(false) rowOverlord.setVisibility(View.GONE);
-        if(false) rowHeir.setVisibility(View.GONE);
-        if(false) rowDiedOut.setVisibility(View.GONE);
-        if(false) layoutTitles.setVisibility(View.GONE);
-        if(false) layoutAncestralWeapons.setVisibility(View.GONE);
-        if(false) layoutCadetBranches.setVisibility(View.GONE);
-        if(false) layoutSwornMembers.setVisibility(View.GONE);
+        if (false) rowCurrentLord.setVisibility(View.GONE);
+        if (false) rowOverlord.setVisibility(View.GONE);
+        if (false) rowHeir.setVisibility(View.GONE);
+        if (false) rowDiedOut.setVisibility(View.GONE);
+        if (false) layoutTitles.setVisibility(View.GONE);
+        if (false) layoutAncestralWeapons.setVisibility(View.GONE);
+        if (false) layoutCadetBranches.setVisibility(View.GONE);
+        if (false) layoutSwornMembers.setVisibility(View.GONE);
 
         // TODO Datos desde BD
-        String[] cad = new String[] { "House Greystark of Wolf's Den", "House Karstark of Karhold"};
+        String[] cad = new String[]{"House Greystark of Wolf's Den", "House Karstark of Karhold"};
         ArrayAdapter<String> acad = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, cad);
         cadetBranches.setAdapter(acad);
@@ -146,7 +143,7 @@ public class HouseDetailsFragment extends Fragment {
         });
 
         // TODO Datos desde BD
-        String[] sw = new String[] { "Jon Snow", "Arya Stark", "Sansa Stark"};
+        String[] sw = new String[]{"Jon Snow", "Arya Stark", "Sansa Stark"};
         ArrayAdapter<String> asw = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, sw);
         swornMembers.setAdapter(asw);
@@ -165,90 +162,6 @@ public class HouseDetailsFragment extends Fragment {
         });
 
         return view;
-    }
-
-    /**
-     * Scraps first image from Google Image
-     */
-    private class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
-        private static final String MARKER = "<div class=\"rg_meta notranslate\">";
-        private static final String MARKER_END = "</div>";
-        private static final String JSON_SRC = "ou";
-
-        @Override
-        protected void onPreExecute() {
-            // Shows download dialog?
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            String sUrl = strings[0];
-
-            try {
-                URL url = new URL(getURLFirstImage(sUrl));
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                return BitmapFactory.decodeStream(input);
-            } catch (Exception e) {
-                Log.d(TAG, "An error ocurred when scrapping (" + sUrl + "): " + e.getMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            if(result != null) {
-                // Download completed
-                coat.setImageBitmap(result);
-            }
-        }
-
-        /**
-         * Retrieves source of first result image.
-         * @param sUrl Google images query
-         * @return URL of first image
-         */
-        private String getURLFirstImage(String sUrl) {
-            URL url;
-            InputStream is = null;
-            BufferedReader br;
-            try {
-                url = new URL(sUrl);
-                URLConnection conn = url.openConnection();
-                // If I don't add this Google returns a 403 response code
-                conn.addRequestProperty ("User-Agent", "Mozilla / 5.0 (Windows NT 6.1; WOW64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 40.0.2214.91 Safari / 537.36");
-                conn.connect();
-
-                is = conn.getInputStream();  // throws an IOException
-                br = new BufferedReader(new InputStreamReader(is));
-
-                // Fills String
-                StringBuffer buf = new StringBuffer();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    buf.append(line);
-                }
-
-                String sourceCode = buf.toString();
-                int i = sourceCode.indexOf(MARKER);
-                if(i == -1) throw new IllegalArgumentException("Google scrapping failed. Marker not found.");
-                else i += MARKER.length();
-                int j = sourceCode.indexOf(MARKER_END, i);
-                JSONObject json = new JSONObject(sourceCode.substring(i, j));
-                return json.getString(JSON_SRC);
-            } catch (Exception e) {
-                Log.d(TAG, "An error ocurred when fetching URL of first image (" + sUrl + "): " + e.getMessage());
-            } finally {
-                try {
-                    if (is != null) is.close();
-                } catch (IOException ioe) {}
-            }
-
-            return sUrl;
-        }
-
     }
 
 }
