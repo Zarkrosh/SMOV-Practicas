@@ -9,4 +9,7 @@
     <dimen name="maxHeightImageDetails">150dp</dimen>
     <dimen name="marginCoatImage">40dp</dimen>
     <dimen name="detailsLinkSize">24sp</dimen>
+    <dimen name="searchSize">24sp</dimen>
+    <dimen name="searchSizeContent">24sp</dimen>
+    <dimen name="noResultsSize">34sp</dimen>
 </resources>

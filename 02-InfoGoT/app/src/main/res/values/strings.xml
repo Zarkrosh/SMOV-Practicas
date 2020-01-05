@@ -14,6 +14,8 @@
     <string name="bookList">List of books</string>
     <string name="charactersList">List of characters</string>
     <string name="housesList">List of houses</string>
+    <string name="search">Search:</string>
+
 
     <!-- Book details -->
     <string name="idBook">idBook</string>
@@ -52,5 +54,4 @@
     <string name="ancestral_weapons">Ancestral weapons</string>
     <string name="cadet_branches">Cadet branches</string>
     <string name="sworn_members">Sworn members</string>
-
 </resources>
