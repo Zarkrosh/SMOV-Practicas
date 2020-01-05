@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/marginCoatImage"
                 android:layout_marginEnd="@dimen/marginCoatImage"
-                android:maxHeight="@dimen/maxHeightCover"
+                android:maxHeight="@dimen/maxHeightImageDetails"
                 android:gravity="center" />
 
             <TextView android:id="@+id/coatDescription"

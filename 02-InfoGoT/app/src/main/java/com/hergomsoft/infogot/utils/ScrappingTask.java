@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
     private static final String TAG = ScrappingTask.class.getSimpleName();
 
-    private final String GOOGLE_IMAGES_BASE = "https://www.google.es/search?tbm=isch&q=site%3Agameofthrones.fandom.com+";
+    private final String GOOGLE_IMAGES_BASE = "https://www.google.es/search?tbm=isch&q=";
     private static final String MARKER = "<div class=\"rg_meta notranslate\">";
     private static final String MARKER_END = "</div>";
     private static final String JSON_SRC = "ou";
@@ -97,9 +97,10 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
             else i += MARKER.length();
             int j = sourceCode.indexOf(MARKER_END, i);
             JSONObject json = new JSONObject(sourceCode.substring(i, j));
+            Log.d(TAG, "Found: " + json.getString(JSON_SRC));
             return json.getString(JSON_SRC);
         } catch (Exception e) {
-            Log.d(TAG, "An error ocurred when fetching URL of first image (" + sUrl + "): " + e.getMessage());
+            Log.d(TAG, "An error ocurred when fetching URL of first image: " + e.getMessage());
         } finally {
             try {
                 if (is != null) is.close();

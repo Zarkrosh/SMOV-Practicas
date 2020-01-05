@@ -41,8 +41,6 @@ import java.nio.charset.StandardCharsets;
 public class CharacterDetailsFragment extends Fragment {
     private static final String TAG = CharacterDetailsFragment.class.getSimpleName();
 
-    private final String GOOGLE_IMAGES_BASE = "https://www.google.es/search?tbm=isch&q=site%3Agameofthrones.fandom.com+";
-
     private ImageView characterImage;
 
     @Override
@@ -93,7 +91,7 @@ public class CharacterDetailsFragment extends Fragment {
         TextView tvSeries = (TextView) view.findViewById(R.id.tvSeries);
 
         // Scraps first result image in Google Images
-        String debugCharacterName = "Jon Snow";
+        String debugCharacterName = "site:gameofthrones.fandom.com Jon Snow";
         try {
             ScrappingTask scrTask = new ScrappingTask(debugCharacterName);
             scrTask.setTargetImageView(characterImage);
@@ -158,7 +156,7 @@ public class CharacterDetailsFragment extends Fragment {
                 Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
 
                 //House clicked = (House) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
+                Intent i = new Intent(getActivity(), BookDetailsActivity.class);
                 //i.putExtra(getResources().getString(R.string.idHouse), clicked.getId());
                 startActivity(i);
             }

@@ -6,7 +6,7 @@
     <dimen name="heightButtonMain">50dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="detailsTextSize">20sp</dimen>
-    <dimen name="maxHeightCover">150dp</dimen>
+    <dimen name="maxHeightImageDetails">150dp</dimen>
     <dimen name="marginCoatImage">40dp</dimen>
     <dimen name="detailsLinkSize">24sp</dimen>
 </resources>

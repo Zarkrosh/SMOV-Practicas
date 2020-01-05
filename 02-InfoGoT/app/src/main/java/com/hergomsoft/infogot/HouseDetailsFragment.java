@@ -95,7 +95,7 @@ public class HouseDetailsFragment extends Fragment {
         NonScrollListView swornMembers = (NonScrollListView) view.findViewById(R.id.swornMembers);
 
         // Scraps coat of arms image on Google Images
-        String debugHouseName = "House Stark of Winterfell";
+        String debugHouseName = "site:gameofthrones.fandom.com House Stark of Winterfell";
         try {
             ScrappingTask scrTask = new ScrappingTask(debugHouseName);
             scrTask.setTargetImageView(coatImage);
@@ -152,11 +152,11 @@ public class HouseDetailsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clicked = (String) parent.getAdapter().getItem(position);
                 Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-                /*
-                Character clicked = (Character) parent.getAdapter().getItem(position);
+
+                //Character clicked = (Character) parent.getAdapter().getItem(position);
                 Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-                i.putExtra(getResources().getString(R.string.idCharacter), clicked.getId());
-                 */
+                //i.putExtra(getResources().getString(R.string.idCharacter), clicked.getId());
+                startActivity(i);
 
             }
         });
