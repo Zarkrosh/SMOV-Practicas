@@ -35,7 +35,7 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
 
     public ScrappingTask(String search) throws UnsupportedEncodingException {
         sUrl = GOOGLE_IMAGES_BASE + URLEncoder.encode(search, StandardCharsets.UTF_8.name());
-        Log.d(TAG, "Scrapping " + sUrl);
+        //Log.d(TAG, "Scrapping " + sUrl);
     }
 
     public void setTargetImageView(ImageView target) {
@@ -97,7 +97,7 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
             else i += MARKER.length();
             int j = sourceCode.indexOf(MARKER_END, i);
             JSONObject json = new JSONObject(sourceCode.substring(i, j));
-            Log.d(TAG, "Found: " + json.getString(JSON_SRC));
+            //Log.d(TAG, "Found: " + json.getString(JSON_SRC));
             return json.getString(JSON_SRC);
         } catch (Exception e) {
             Log.d(TAG, "An error ocurred when fetching URL of first image: " + e.getMessage());

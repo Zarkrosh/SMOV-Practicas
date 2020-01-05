@@ -29,6 +29,9 @@ public class BookDetailsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        String idBook = getActivity().getIntent().getStringExtra(getResources().getString(R.string.idBook));
+        // TODO Obtener datos desde la BD
+
     }
 
     @Override

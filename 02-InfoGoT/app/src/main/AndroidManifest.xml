@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".services.DoYouKnowService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".BookListActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -41,10 +46,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.hergomsoft.infogot"
             android:name=".db.InfoGoTProvider"
-            android:exported="false"/>
+            android:authorities="com.hergomsoft.infogot"
+            android:exported="false" />
     </application>
 
 </manifest>

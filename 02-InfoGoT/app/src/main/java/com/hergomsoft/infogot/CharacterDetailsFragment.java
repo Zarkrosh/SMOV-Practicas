@@ -1,10 +1,7 @@
 package com.hergomsoft.infogot;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,21 +18,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.hergomsoft.infogot.components.NonScrollListView;
-import com.hergomsoft.infogot.domain.House;
 import com.hergomsoft.infogot.utils.ScrappingTask;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 
 public class CharacterDetailsFragment extends Fragment {

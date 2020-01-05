@@ -1,7 +1,5 @@
 package com.hergomsoft.infogot;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hergomsoft.infogot.components.CustomProgress;
+import com.hergomsoft.infogot.services.DoYouKnowService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Downloads data from API if it's not already downloaded
         //new DownloadTask().execute();
+
+        startService(new Intent(this, DoYouKnowService.class));
     }
 
     @Override

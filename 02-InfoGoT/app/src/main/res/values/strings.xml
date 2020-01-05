@@ -24,6 +24,17 @@
 
     <!-- Character details -->
     <string name="idCharacter">idCharacter</string>
+    <string name="gender">Gender</string>
+    <string name="culture">Culture</string>
+    <string name="born">Born</string>
+    <string name="died">Died</string>
+    <string name="father">Father</string>
+    <string name="mother">Mother</string>
+    <string name="spouse">Spouse</string>
+    <string name="played_by">Played by</string>
+    <string name="aliases">Aliases</string>
+    <string name="allegiances">Allegiances</string>
+    <string name="tv_series">TV Series</string>
 
     <!-- House details -->
     <string name="idHouse">idHouse</string>
@@ -41,7 +52,5 @@
     <string name="ancestral_weapons">Ancestral weapons</string>
     <string name="cadet_branches">Cadet branches</string>
     <string name="sworn_members">Sworn members</string>
-
-
 
 </resources>
