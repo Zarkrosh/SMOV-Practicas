@@ -8,6 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class InfoGoTProvider extends ContentProvider {
     // Use an int for each URI we will run, this represents the different queries
     private static final int BOOK = 10;
@@ -232,77 +235,77 @@ public class InfoGoTProvider extends ContentProvider {
 
         switch(sUriMatcher.match(uri)){
             case BOOK:
-                _id = db.insert(InfoGotContract.BookEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.BookEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.BookEntry.buildBookUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case APPEARANCE:
-                _id = db.insert(InfoGotContract.AppearanceEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.AppearanceEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.AppearanceEntry.buildAppearanceUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case CHARACTER:
-                _id = db.insert(InfoGotContract.CharacterEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.CharacterEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.CharacterEntry.buildCharacterUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case CHARACTERTITLE:
-                _id = db.insert(InfoGotContract.CharacterTitleEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.CharacterTitleEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.CharacterTitleEntry.buildCharacterTitleUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case ALIAS:
-                _id = db.insert(InfoGotContract.AliasEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.AliasEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.AliasEntry.buildAliasUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case MEMBER:
-                _id = db.insert(InfoGotContract.MemberEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.MemberEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.MemberEntry.buildMemberUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case HOUSE:
-                _id = db.insert(InfoGotContract.HouseEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.HouseEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.HouseEntry.buildHouseUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case HOUSETITLE:
-                _id = db.insert(InfoGotContract.HouseTitleEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.HouseTitleEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.HouseTitleEntry.buildHouseTitleUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case SEAT:
-                _id = db.insert(InfoGotContract.SeatEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.SeatEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.SeatEntry.buildSeatUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case ANCESTRALWEAPON:
-                _id = db.insert(InfoGotContract.AncestralWeaponEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.AncestralWeaponEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.AncestralWeaponEntry.buildAncestralWeaponUri(_id);
                 else
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case BRANCH:
-                _id = db.insert(InfoGotContract.BranchEntry.TABLE_NAME, null, values);
+                _id = db.insertWithOnConflict(InfoGotContract.BranchEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.BranchEntry.buildBranchUri(_id);
                 else

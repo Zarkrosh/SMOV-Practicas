@@ -1,5 +1,6 @@
 package com.hergomsoft.infogot;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,10 +13,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hergomsoft.infogot.components.CustomProgress;
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.services.DoYouKnowService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,9 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCharacters.setOnClickListener(this);
         btnHouses = (Button) findViewById(R.id.btnHouses);
         btnHouses.setOnClickListener(this);
-
         // Downloads data from API if it's not already downloaded
-        //new DownloadTask().execute();
+        new DownloadTask().execute();
 
         startService(new Intent(this, DoYouKnowService.class));
     }
@@ -91,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected Boolean doInBackground(String... strings) {
             boolean completed = false;
-
             try {
                 // Books' data
                 int page = 1;
@@ -101,8 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     JSONArray ja = new JSONArray(response);
                     Log.d(TAG, "Page " + page + " -> " + ja.length());
-                    // TODO Meter en BD
-
+                    //Meter en BD
+                    for(int i=0;i<ja.length();i++){
+                        insertBookEntry(ja.getJSONObject(i));
+                    }
                     // Looks for last page
                     if(last == -1) {
                         last = getLastPage(API_BOOKS);
@@ -123,8 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     JSONArray ja = new JSONArray(response);
                     Log.d(TAG, "Page " + page + " -> " + ja.length());
-                    // TODO Meter en BD
-
+                    //Meter en BD
+                    for(int i=0;i<ja.length();i++){
+                        insertCharacterEntry(ja.getJSONObject(i));
+                    }
                     // Looks for last page
                     if(last == -1) {
                         last = getLastPage(API_CHARACTERS);
@@ -145,8 +150,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     JSONArray ja = new JSONArray(response);
                     Log.d(TAG, "Page " + page + " -> " + ja.length());
-                    // TODO Meter en BD
-
+                    //Meter en BD
+                    for(int i=0;i<ja.length();i++){
+                        insertHouseEntry(ja.getJSONObject(i));
+                    }
                     // Looks for last page
                     if(last == -1) {
                         last = getLastPage(API_HOUSES);
@@ -231,6 +238,184 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             sURLLast = sURLLast.substring(1, sURLLast.length() - 1);
             Uri uriLast = Uri.parse(sURLLast);
             return Integer.parseInt(uriLast.getQueryParameter("page"));
+        }
+
+        /*
+        methods for inserting entries on their tables and its related tables
+         */
+        private void insertBookEntry(JSONObject book) throws JSONException {
+            ContentValues values=new ContentValues();
+            String urlID=book.getString("url");
+            int id=Integer.parseInt(urlID.substring(urlID.lastIndexOf("/") + 1));
+            values.put(InfoGotContract.BookEntry._ID,id);
+            values.put(InfoGotContract.BookEntry.COLUMN_NAME,book.getString("name"));
+            values.put(InfoGotContract.BookEntry.COLUMN_RELEASED,book.getString("released"));
+            values.put(InfoGotContract.BookEntry.COLUMN_NPAGES,book.getInt("numberOfPages"));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.BookEntry.CONTENT_URI,values);
+
+            JSONArray characters=book.getJSONArray("characters");
+            for(int i=0;i<characters.length();i++){
+                insertAppearanceEntry(id,characters.getString(i));
+            }
+            characters=book.getJSONArray("povCharacters");
+            for(int i=0;i<characters.length();i++){
+                insertAppearanceEntry(id,characters.getString(i));
+            }
+        }
+
+        private void insertAppearanceEntry(int idb, String urlIDC) {
+            if(urlIDC.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.AppearanceEntry.COLUMN_IDB,idb);
+            values.put(InfoGotContract.AppearanceEntry.COLUMN_IDC,Integer.parseInt(urlIDC.substring(urlIDC.lastIndexOf("/") + 1)));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.AppearanceEntry.CONTENT_URI,values);
+        }
+
+        private void insertCharacterEntry(JSONObject character) throws JSONException {
+            ContentValues values=new ContentValues();
+            String urlID=character.getString("url");
+
+            int id=Integer.parseInt(urlID.substring(urlID.lastIndexOf("/") + 1));
+            values.put(InfoGotContract.CharacterEntry._ID,id);
+            values.put(InfoGotContract.CharacterEntry.COLUMN_NAME,character.getString("name"));
+            values.put(InfoGotContract.CharacterEntry.COLUMN_GENDER,character.getString("gender"));
+            values.put(InfoGotContract.CharacterEntry.COLUMN_CULTURE,character.getString("culture"));
+            values.put(InfoGotContract.CharacterEntry.COLUMN_BORN,character.getString("born"));
+            values.put(InfoGotContract.CharacterEntry.COLUMN_DIED,character.getString("died"));
+            String urlSpouse=character.getString("spouse");
+            values.put(InfoGotContract.CharacterEntry.COLUMN_SPOUSE,urlSpouse.isEmpty() ? null : Integer.parseInt(urlSpouse.substring(urlSpouse.lastIndexOf("/") + 1)));
+            String urlFather=character.getString("father");
+            values.put(InfoGotContract.CharacterEntry.COLUMN_FATHER,urlFather.isEmpty() ? null : Integer.parseInt(urlFather.substring(urlFather.lastIndexOf("/") + 1)));
+            String urlMother=character.getString("mother");
+            values.put(InfoGotContract.CharacterEntry.COLUMN_MOTHER,urlMother.isEmpty() ? null : Integer.parseInt(urlMother.substring(urlMother.lastIndexOf("/") + 1)));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.CharacterEntry.CONTENT_URI,values);
+
+            JSONArray characterTitles=character.getJSONArray("titles");
+            for(int i=0;i<characterTitles.length();i++){
+                insertCharacterTitlesEntry(id,characterTitles.getString(i));
+            }
+            JSONArray aliases=character.getJSONArray("aliases");
+            for(int i=0;i<aliases.length();i++){
+                insertAliasEntry(id,aliases.getString(i));
+            }
+            JSONArray allegiances=character.getJSONArray("allegiances");
+            for(int i=0;i<allegiances.length();i++){
+                insertMemberEntry(id,allegiances.getString(i));
+            }
+        }
+
+        private void insertMemberEntry(int idc, String urlIDH) {
+            if(urlIDH.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.MemberEntry.COLUMN_IDC,idc);
+            values.put(InfoGotContract.MemberEntry.COLUMN_IDH,Integer.parseInt(urlIDH.substring(urlIDH.lastIndexOf("/") + 1)));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.MemberEntry.CONTENT_URI,values);
+        }
+
+        private void insertAliasEntry(int idc, String alias) {
+            if(alias.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.AliasEntry.COLUMN_IDC,idc);
+            values.put(InfoGotContract.AliasEntry.COLUMN_ALIAS,alias);
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.AliasEntry.CONTENT_URI,values);
+        }
+
+        private void insertCharacterTitlesEntry(int idc, String title) {
+            if(title.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.CharacterTitleEntry.COLUMN_IDC,idc);
+            values.put(InfoGotContract.CharacterTitleEntry.COLUMN_TITLE,title);
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.CharacterTitleEntry.CONTENT_URI,values);
+        }
+
+        private void insertHouseEntry(JSONObject house) throws JSONException {
+            ContentValues values=new ContentValues();
+            String urlID=house.getString("url");
+            int id=Integer.parseInt(urlID.substring(urlID.lastIndexOf("/") + 1));
+            values.put(InfoGotContract.HouseEntry._ID,id);
+            values.put(InfoGotContract.HouseEntry.COLUMN_NAME,house.getString("name"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_REGION,house.getString("region"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_WORDS,house.getString("words"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_COATOFARMS,house.getString("coatOfArms"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_DIED,house.getString("diedOut"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_FOUDED,house.getString("founded"));
+            String urlOverlord=house.getString("spouse");
+            values.put(InfoGotContract.HouseEntry.COLUMN_OVERLORD,urlOverlord.isEmpty() ? null : Integer.parseInt(urlOverlord.substring(urlOverlord.lastIndexOf("/") + 1)));
+            String urlHeir=house.getString("father");
+            values.put(InfoGotContract.HouseEntry.COLUMN_HEIR,urlHeir.isEmpty() ? null : Integer.parseInt(urlHeir.substring(urlHeir.lastIndexOf("/") + 1)));
+            String urlLord=house.getString("mother");
+            values.put(InfoGotContract.HouseEntry.COLUMN_LORD,urlLord.isEmpty() ? null : Integer.parseInt(urlLord.substring(urlLord.lastIndexOf("/") + 1)));
+            String urlFounder=house.getString("spouse");
+            values.put(InfoGotContract.HouseEntry.COLUMN_FOUNDER,urlFounder.isEmpty() ? null : Integer.parseInt(urlFounder.substring(urlFounder.lastIndexOf("/") + 1)));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.HouseEntry.CONTENT_URI,values);
+
+            JSONArray HouseTitles=house.getJSONArray("titles");
+            for(int i=0;i<HouseTitles.length();i++){
+                insertHouseTitleEntry(id,HouseTitles.getString(i));
+            }
+            JSONArray seats=house.getJSONArray("seats");
+            for(int i=0;i<seats.length();i++){
+                insertSeatEntry(id,seats.getString(i));
+            }
+            JSONArray ancestralWeapons=house.getJSONArray("ancestralWeapons");
+            for(int i=0;i<ancestralWeapons.length();i++){
+                insertAncestralWeaponEntry(id,ancestralWeapons.getString(i));
+            }
+            JSONArray cadetBranches=house.getJSONArray("cadetBranches");
+            for(int i=0;i<cadetBranches.length();i++){
+                insertBranchEntry(id,cadetBranches.getString(i));
+            }
+        }
+
+        private void insertHouseTitleEntry(int idh, String title) {
+            if(title.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.HouseTitleEntry.COLUMN_IDH,idh);
+            values.put(InfoGotContract.HouseTitleEntry.COLUMN_TITLE,title);
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.HouseTitleEntry.CONTENT_URI,values);
+        }
+
+        private void insertSeatEntry(int idh, String seat) {
+            if(seat.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.SeatEntry.COLUMN_IDH,idh);
+            values.put(InfoGotContract.SeatEntry.COLUMN_SEAT,seat);
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.SeatEntry.CONTENT_URI,values);
+        }
+
+        private void insertAncestralWeaponEntry(int idh, String weapon) {
+            if(weapon.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.AncestralWeaponEntry.COLUMN_IDH,idh);
+            values.put(InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON,weapon);
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.AncestralWeaponEntry.CONTENT_URI,values);
+        }
+
+        private void insertBranchEntry(int idh, String urlIDHB) {
+            if(urlIDHB.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.BranchEntry.COLUMN_IDH,idh);
+            values.put(InfoGotContract.BranchEntry.COLUMN_IDHB,Integer.parseInt(urlIDHB.substring(urlIDHB.lastIndexOf("/") + 1)));
+            //TODO content uri or content type?
+            getContentResolver().insert(InfoGotContract.BranchEntry.CONTENT_URI,values);
         }
     }
 }

@@ -58,8 +58,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + InfoGotContract.BookEntry.TABLE_NAME + " (" +
                         InfoGotContract.BookEntry._ID + " INTEGER PRIMARY KEY, " +
                         InfoGotContract.BookEntry.COLUMN_NAME + " TEXT, "+
-                        InfoGotContract.BookEntry.COLUMN_RELEASED+ "TEXT, "+
-                        InfoGotContract.BookEntry.COLUMN_NPAGES+"INTEGER);"
+                        InfoGotContract.BookEntry.COLUMN_RELEASED+ " TEXT, "+
+                        InfoGotContract.BookEntry.COLUMN_NPAGES+" INTEGER);"
         );
     }
 
@@ -81,11 +81,11 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.CharacterEntry.COLUMN_NAME + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_GENDER + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_CULTURE + " TEXT, " +
-                        InfoGotContract.CharacterEntry.COLUMN_BORN + "TEXT, " +
-                        InfoGotContract.CharacterEntry.COLUMN_DIED + "TEXT, " +
-                        InfoGotContract.CharacterEntry.COLUMN_SPOUSE + "INTEGER, " +
-                        InfoGotContract.CharacterEntry.COLUMN_FATHER + "INTEGER, " +
-                        InfoGotContract.CharacterEntry.COLUMN_MOTHER + "INTEGER, " +
+                        InfoGotContract.CharacterEntry.COLUMN_BORN + " TEXT, " +
+                        InfoGotContract.CharacterEntry.COLUMN_DIED + " TEXT, " +
+                        InfoGotContract.CharacterEntry.COLUMN_SPOUSE + " INTEGER, " +
+                        InfoGotContract.CharacterEntry.COLUMN_FATHER + " INTEGER, " +
+                        InfoGotContract.CharacterEntry.COLUMN_MOTHER + " INTEGER, " +
                         "FOREIGN KEY (" + InfoGotContract.CharacterEntry.COLUMN_SPOUSE+ ") " +
                         "REFERENCES " + InfoGotContract.CharacterEntry.TABLE_NAME + " (" + InfoGotContract.CharacterEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.CharacterEntry.COLUMN_FATHER+ ") " +
@@ -133,13 +133,13 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.HouseEntry.COLUMN_NAME + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_REGION + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_WORDS + " TEXT, " +
-                        InfoGotContract.HouseEntry.COLUMN_FOUDED + "TEXT, " +
-                        InfoGotContract.HouseEntry.COLUMN_DIED + "TEXT, " +
-                        InfoGotContract.HouseEntry.COLUMN_COATOFARMS + "TEXT, " +
-                        InfoGotContract.HouseEntry.COLUMN_OVERLORD + "INTEGER, " +
-                        InfoGotContract.HouseEntry.COLUMN_LORD + "INTEGER, " +
-                        InfoGotContract.HouseEntry.COLUMN_HEIR + "INTEGER, " +
-                        InfoGotContract.HouseEntry.COLUMN_FOUNDER + "INTEGER, " +
+                        InfoGotContract.HouseEntry.COLUMN_FOUDED + " TEXT, " +
+                        InfoGotContract.HouseEntry.COLUMN_DIED + " TEXT, " +
+                        InfoGotContract.HouseEntry.COLUMN_COATOFARMS + " TEXT, " +
+                        InfoGotContract.HouseEntry.COLUMN_OVERLORD + " INTEGER, " +
+                        InfoGotContract.HouseEntry.COLUMN_LORD + " INTEGER, " +
+                        InfoGotContract.HouseEntry.COLUMN_HEIR + " INTEGER, " +
+                        InfoGotContract.HouseEntry.COLUMN_FOUNDER + " INTEGER, " +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_OVERLORD+ ") " +
                         "REFERENCES " + InfoGotContract.HouseEntry.TABLE_NAME + " (" + InfoGotContract.HouseEntry._ID+ ")," +
                         "FOREIGN KEY (" + InfoGotContract.HouseEntry.COLUMN_LORD+ ") " +
