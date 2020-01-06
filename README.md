@@ -6,5 +6,9 @@
       - Actualizar estado de Twitter: fragment, snackbar y diálogo personalizado
       - Línea de tiempo de seguidos
       - Detalles de un tweet al hacer click en uno de la lista
-  02. Final: práctica final de la asignatura (pendiente por decidir)
-
+  02. InfoGoT: información sobre el universo de Hielo y Fuego (Juego de Tronos)
+      - Uso de la API pública www.anapioficeandfire.com
+      - Descarga y almacenamiento en BD
+      - Listas de libros, personajes y casas
+      - Detalles de libro, personaje y casa (+ scrapping)
+      - Servicio de notificaciones periódicas con quiz de lemas de casa
