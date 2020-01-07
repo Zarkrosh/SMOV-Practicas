@@ -1,13 +1,17 @@
 package com.hergomsoft.infogot;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +44,7 @@ public class BookDetailsFragment extends Fragment {
 
         TextView name = (TextView) view.findViewById(R.id.name);
         cover = (ImageView) view.findViewById(R.id.cover);
+        ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView releaseDate = (TextView) view.findViewById(R.id.releaseDate);
         TextView authors = (TextView) view.findViewById(R.id.authors);
         NonScrollListView characters = (NonScrollListView) view.findViewById(R.id.characters);
@@ -54,6 +59,17 @@ public class BookDetailsFragment extends Fragment {
             Log.d(TAG, "Scrapping of book cover image failed: " + e.getMessage());
         }
 
+        // Browse on the internet if button clicked
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO String query = bookName + " book";
+                String query = "A Knight of the Seven Kingdoms book";
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                startActivity(intent);
+            }
+        });
 
         // TODO Configurar vista a partir del modelo
 

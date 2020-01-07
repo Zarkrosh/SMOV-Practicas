@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -25,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
     private static final String TAG = ScrappingTask.class.getSimpleName();
 
-    private final String GOOGLE_IMAGES_BASE = "https://www.google.es/search?tbm=isch&q=";
+    private final String GOOGLE_IMAGES_BASE = "https://www.google.com/search?&source=lnms&tbm=isch&q=";
     private static final String MARKER = "<div class=\"rg_meta notranslate\">";
     private static final String MARKER_END = "</div>";
     private static final String JSON_SRC = "ou";
@@ -76,11 +75,16 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
         BufferedReader br;
         try {
             url = new URL(sUrl);
-            URLConnection conn = url.openConnection();
-            // If I don't add this Google returns a 403 response code
-            conn.addRequestProperty ("User-Agent", "Mozilla / 5.0 (Windows NT 6.1; WOW64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 40.0.2214.91 Safari / 537.36");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            // If I don't add more data, Google blocks connection
+            conn.addRequestProperty ("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0");
+            conn.addRequestProperty("Accept", "text/html");
+            conn.addRequestProperty("Accept-Language", "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3");
+            conn.addRequestProperty("Referer", "https://www.google.com/");
+            conn.addRequestProperty("Host", "www.google.com");
             conn.connect();
 
+            Log.d(TAG, "Code: " + conn.getResponseCode());
             is = conn.getInputStream();  // throws an IOException
             br = new BufferedReader(new InputStreamReader(is));
 

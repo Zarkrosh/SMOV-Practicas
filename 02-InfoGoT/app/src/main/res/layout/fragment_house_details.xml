@@ -46,13 +46,31 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/detailsTextSize" />
 
-            <ImageView android:id="@+id/coat"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginCoatImage"
-                android:layout_marginEnd="@dimen/marginCoatImage"
-                android:maxHeight="@dimen/maxHeightImageDetails"
-                android:gravity="center" />
+                android:layout_height="wrap_content">
+
+                <ImageView android:id="@+id/coat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/marginCoatImage"
+                    android:layout_marginEnd="@dimen/marginCoatImage"
+                    android:maxHeight="@dimen/maxHeightImageDetails"
+                    android:gravity="center" />
+
+                <ImageButton android:id="@+id/browse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:maxHeight="@dimen/browseSize"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:padding="0dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_browse" />
+
+            </RelativeLayout>
 
             <TextView android:id="@+id/coatDescription"
                 android:layout_width="match_parent"

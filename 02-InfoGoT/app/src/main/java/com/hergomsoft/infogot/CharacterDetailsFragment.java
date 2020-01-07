@@ -1,5 +1,6 @@
 package com.hergomsoft.infogot;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -43,6 +45,7 @@ public class CharacterDetailsFragment extends Fragment {
 
         TextView name = (TextView) view.findViewById(R.id.name);
         characterImage = (ImageView) view.findViewById(R.id.characterImage);
+        ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView gender = (TextView) view.findViewById(R.id.gender);
         TextView culture = (TextView) view.findViewById(R.id.culture);
         // Born Died (hidden if not)
@@ -84,6 +87,18 @@ public class CharacterDetailsFragment extends Fragment {
         } catch (UnsupportedEncodingException e) {
             Log.d(TAG, "Scrapping of character image failed: " + e.getMessage());
         }
+
+        // Browse on the internet if button clicked
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO String query = characterName + " character";
+                String query = "Jon Snow character";
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                startActivity(intent);
+            }
+        });
 
 
         // TODO Configurar vista a partir del modelo

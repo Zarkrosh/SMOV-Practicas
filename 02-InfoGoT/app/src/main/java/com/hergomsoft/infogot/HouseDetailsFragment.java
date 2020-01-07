@@ -1,5 +1,6 @@
 package com.hergomsoft.infogot;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -43,6 +45,7 @@ public class HouseDetailsFragment extends Fragment {
         TextView name = (TextView) view.findViewById(R.id.name);
         // Coat of house (image and description)
         coatImage = (ImageView) view.findViewById(R.id.coat);
+        ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView coatDescription = (TextView) view.findViewById(R.id.coatDescription);
         // Words
         TextView words = (TextView) view.findViewById(R.id.words);
@@ -85,6 +88,18 @@ public class HouseDetailsFragment extends Fragment {
         } catch (Exception e) {
             Log.d(TAG, "Scrapping of coat failed: " + e.getMessage());
         }
+
+        // Browse on the internet if button clicked
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO String query = houseName;
+                String query = "House Stark of Winterfell";
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                startActivity(intent);
+            }
+        });
 
         // TODO Configurar vista a partir del modelo
 

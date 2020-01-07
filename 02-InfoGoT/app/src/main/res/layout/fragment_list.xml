@@ -27,7 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/listTitle"
         android:layout_margin="10dp"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
+        <!-- focusableInTouchMode="true" prevents EditText from gaining focus on start -->
 
         <TextView
             android:layout_width="wrap_content"
