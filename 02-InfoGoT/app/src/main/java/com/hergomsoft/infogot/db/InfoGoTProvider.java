@@ -23,18 +23,20 @@ public class InfoGoTProvider extends ContentProvider {
     private static final int CHARACTERTITLE_ID = 41;
     private static final int ALIAS = 50;
     private static final int ALIAS_ID = 51;
-    private static final int MEMBER = 60;
-    private static final int MEMBER_ID = 61;
-    private static final int HOUSE = 70;
-    private static final int HOUSE_ID = 71;
-    private static final int HOUSETITLE = 80;
-    private static final int HOUSETITLE_ID= 81;
-    private static final int SEAT = 90;
-    private static final int SEAT_ID = 91;
-    private static final int ANCESTRALWEAPON = 100;
-    private static final int ANCESTRALWEAPON_ID = 101;
-    private static final int BRANCH = 110;
-    private static final int BRANCH_ID = 111;
+    private static final int TVSERIES = 60;
+    private static final int TVSERIES_ID = 61;
+    private static final int MEMBER = 70;
+    private static final int MEMBER_ID = 71;
+    private static final int HOUSE = 80;
+    private static final int HOUSE_ID = 81;
+    private static final int HOUSETITLE = 90;
+    private static final int HOUSETITLE_ID= 91;
+    private static final int SEAT = 100;
+    private static final int SEAT_ID = 101;
+    private static final int ANCESTRALWEAPON = 110;
+    private static final int ANCESTRALWEAPON_ID = 111;
+    private static final int BRANCH = 120;
+    private static final int BRANCH_ID = 121;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private DBHelper dbHelper;
@@ -51,8 +53,7 @@ public class InfoGoTProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher(){
         String content = InfoGotContract.CONTENT_AUTHORITY;
 
-        // All paths to the UriMatcher have a corresponding code to return
-        // when a match is found (the ints above).
+        // All paths to the UriMatcher have a corresponding code to return when a match is found (the ints above).
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(content, InfoGotContract.PATH_BOOK, BOOK);
         matcher.addURI(content, InfoGotContract.PATH_BOOK + "/#", BOOK_ID);
@@ -64,6 +65,8 @@ public class InfoGoTProvider extends ContentProvider {
         matcher.addURI(content, InfoGotContract.PATH_CHARACTERTITLE + "/#", CHARACTERTITLE_ID);
         matcher.addURI(content, InfoGotContract.PATH_ALIAS, ALIAS);
         matcher.addURI(content, InfoGotContract.PATH_ALIAS + "/#", ALIAS_ID);
+        matcher.addURI(content, InfoGotContract.PATH_TVSERIES, TVSERIES);
+        matcher.addURI(content, InfoGotContract.PATH_TVSERIES + "/#", TVSERIES_ID);
         matcher.addURI(content, InfoGotContract.PATH_MEMBER, MEMBER);
         matcher.addURI(content, InfoGotContract.PATH_MEMBER + "/#", MEMBER_ID);
         matcher.addURI(content, InfoGotContract.PATH_HOUSE, HOUSE);
@@ -103,6 +106,10 @@ public class InfoGoTProvider extends ContentProvider {
                 return InfoGotContract.AliasEntry.CONTENT_TYPE;
             case ALIAS_ID:
                 return InfoGotContract.AliasEntry.CONTENT_ITEM_TYPE;
+            case TVSERIES:
+                return InfoGotContract.TVseriesEntry.CONTENT_TYPE;
+            case TVSERIES_ID:
+                return InfoGotContract.TVseriesEntry.CONTENT_ITEM_TYPE;
             case MEMBER:
                 return InfoGotContract.MemberEntry.CONTENT_TYPE;
             case MEMBER_ID:
@@ -172,6 +179,13 @@ public class InfoGoTProvider extends ContentProvider {
             case ALIAS_ID:
                 _id = ContentUris.parseId(uri);
                 retCursor = db.query(InfoGotContract.AliasEntry.TABLE_NAME, projection, InfoGotContract.AliasEntry._ID + " = ?", new String[]{String.valueOf(_id)}, null, null, sortOrder);
+                break;
+            case TVSERIES:
+                retCursor = db.query(InfoGotContract.TVseriesEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case TVSERIES_ID:
+                _id = ContentUris.parseId(uri);
+                retCursor = db.query(InfoGotContract.TVseriesEntry.TABLE_NAME, projection, InfoGotContract.TVseriesEntry._ID + " = ?", new String[]{String.valueOf(_id)}, null, null, sortOrder);
                 break;
             case MEMBER:
                 retCursor = db.query(InfoGotContract.MemberEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
@@ -259,6 +273,11 @@ public class InfoGoTProvider extends ContentProvider {
                 if(_id > 0)
                     returnUri =  InfoGotContract.AliasEntry.buildAliasUri(_id);
                 break;
+            case TVSERIES:
+                _id = db.insertWithOnConflict(InfoGotContract.TVseriesEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                if(_id > 0)
+                    returnUri =  InfoGotContract.TVseriesEntry.buildTVseriesUri(_id);
+                break;
             case MEMBER:
                 _id = db.insertWithOnConflict(InfoGotContract.MemberEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
@@ -321,6 +340,9 @@ public class InfoGoTProvider extends ContentProvider {
             case ALIAS:
                 rows = db.delete(InfoGotContract.AliasEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case TVSERIES:
+                rows = db.delete(InfoGotContract.TVseriesEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case MEMBER:
                 rows = db.delete(InfoGotContract.MemberEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -371,6 +393,9 @@ public class InfoGoTProvider extends ContentProvider {
                 break;
             case ALIAS:
                 rows = db.update(InfoGotContract.AliasEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case TVSERIES:
+                rows = db.update(InfoGotContract.TVseriesEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             case MEMBER:
                 rows = db.update(InfoGotContract.MemberEntry.TABLE_NAME, values, selection, selectionArgs);

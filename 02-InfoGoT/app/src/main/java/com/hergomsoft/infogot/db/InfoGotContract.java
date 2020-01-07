@@ -17,6 +17,7 @@ public class InfoGotContract {
     public static final String PATH_CHARACTER = "character";
     public static final String PATH_CHARACTERTITLE = "charactertitle";
     public static final String PATH_ALIAS = "alias";
+    public static final String PATH_TVSERIES = "tvseries";
     public static final String PATH_MEMBER = "member";
     public static final String PATH_HOUSE = "house";
     public static final String PATH_BRANCH = "branch";
@@ -41,6 +42,7 @@ public class InfoGotContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_RELEASED= "released";
         public static final String COLUMN_NPAGES = "npages";
+        public static final String COLUMN_AUTHOR = "author";
 
         // Define a function to build a URI to find a specific BOOK by it's identifier
         public static Uri buildBookUri(long id){
@@ -91,6 +93,7 @@ public class InfoGotContract {
         public static final String COLUMN_SPOUSE= "spouse";
         public static final String COLUMN_FATHER= "father";
         public static final String COLUMN_MOTHER= "mother";
+        public static final String COLUMN_PLAYEDBY= "playedby";
 
         // Define a function to build a URI to find a specific Character by it's identifier
         public static Uri buildCharacterUri(long id){
@@ -138,6 +141,28 @@ public class InfoGotContract {
 
         // Define a function to build a URI to find a specific Alias by it's identifier
         public static Uri buildAliasUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class TVseriesEntry implements BaseColumns {
+        // Content URI represents the base location for the table
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TVSERIES).build();
+
+        // These are special type prefixes that specify if a URI returns a list or a specific item
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_URI  + "/" + PATH_TVSERIES;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_URI + "/" + PATH_TVSERIES;
+
+        // Define the table schema
+        public static final String TABLE_NAME = "tvseries";
+        public static final String COLUMN_IDC= "idc";
+        public static final String COLUMN_SEASON= "season";
+
+        // Define a function to build a URI to find a specific Alias by it's identifier
+        public static Uri buildTVseriesUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

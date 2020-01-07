@@ -4,11 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Creates the Movie database used for this application.
- *
- * Created by adammcneilly on 9/19/15.
- */
 public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "infoGoT.db";
@@ -32,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         addCharacterTable(db);
         addCharacterTitleTable(db);
         addAliasTable(db);
+        addTVseriesTable(db);
         addMemberTable(db);
         addHouseTable(db);
         addHouseTitlesTable(db);
@@ -59,7 +55,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.BookEntry._ID + " INTEGER PRIMARY KEY, " +
                         InfoGotContract.BookEntry.COLUMN_NAME + " TEXT, "+
                         InfoGotContract.BookEntry.COLUMN_RELEASED+ " TEXT, "+
-                        InfoGotContract.BookEntry.COLUMN_NPAGES+" INTEGER);"
+                        InfoGotContract.BookEntry.COLUMN_NPAGES+" INTEGER," +
+                        InfoGotContract.BookEntry.COLUMN_AUTHOR+ " TEXT);"
         );
     }
 
@@ -83,6 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.CharacterEntry.COLUMN_CULTURE + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_BORN + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_DIED + " TEXT, " +
+                        InfoGotContract.CharacterEntry.COLUMN_PLAYEDBY + " TEXT, " +
                         InfoGotContract.CharacterEntry.COLUMN_SPOUSE + " INTEGER, " +
                         InfoGotContract.CharacterEntry.COLUMN_FATHER + " INTEGER, " +
                         InfoGotContract.CharacterEntry.COLUMN_MOTHER + " INTEGER, " +
@@ -112,6 +110,16 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.AliasEntry.COLUMN_IDC+ " INTEGER " +
                         "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE, "+
                         InfoGotContract.AliasEntry.COLUMN_ALIAS+ " TEXT);"
+        );
+    }
+
+    private void addTVseriesTable(SQLiteDatabase db){
+        db.execSQL(
+                "CREATE TABLE " + InfoGotContract.TVseriesEntry.TABLE_NAME + " (" +
+                        InfoGotContract.TVseriesEntry._ID + " INTEGER PRIMARY KEY, " +
+                        InfoGotContract.TVseriesEntry.COLUMN_IDC+ " INTEGER " +
+                        "REFERENCES " +InfoGotContract.CharacterEntry.TABLE_NAME+"("+InfoGotContract.CharacterEntry._ID+ ") ON DELETE CASCADE, "+
+                        InfoGotContract.TVseriesEntry.COLUMN_SEASON+ " TEXT);"
         );
     }
 

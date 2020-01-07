@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHouses = (Button) findViewById(R.id.btnHouses);
         btnHouses.setOnClickListener(this);
         // Downloads data from API if it's not already downloaded
-        new DownloadTask().execute();
+        //new DownloadTask().execute();
 
         startService(new Intent(this, DoYouKnowService.class));
     }
@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     page++;
                 }
 
+                Log.d(TAG,"books finished");
+
                 // Characters' data
                 page = 1;
                 last = -1;
@@ -141,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     page++;
                 }
 
+                Log.d(TAG,"characters finished");
+
                 // Houses' data
                 page = 1;
                 last = -1;
@@ -164,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(page == last) completed = true;
                     page++;
                 }
+
+                Log.d(TAG,"housees finished");
+
             } catch (MalformedURLException e) {
                 Log.d(TAG, "Malformed URL: " + e.toString());
             } catch (IOException e) {
@@ -177,11 +184,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } finally {
                 if(!completed) return false;
             }
-
-            // Dummy wait to admire the dialog
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException e) {}
 
             return true;
         }
@@ -245,13 +247,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
         private void insertBookEntry(JSONObject book) throws JSONException {
             ContentValues values=new ContentValues();
-            values.clear();
             String urlID=book.getString("url");
             int id=Integer.parseInt(urlID.substring(urlID.lastIndexOf("/") + 1));
             values.put(InfoGotContract.BookEntry._ID,id);
             values.put(InfoGotContract.BookEntry.COLUMN_NAME,book.getString("name"));
             values.put(InfoGotContract.BookEntry.COLUMN_RELEASED,book.getString("released"));
             values.put(InfoGotContract.BookEntry.COLUMN_NPAGES,book.getInt("numberOfPages"));
+            values.put(InfoGotContract.BookEntry.COLUMN_AUTHOR,book.getJSONArray("authors").getString(0));
             getContentResolver().insert(InfoGotContract.BookEntry.CONTENT_URI,values);
 
             JSONArray characters=book.getJSONArray("characters");
@@ -284,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.CharacterEntry.COLUMN_CULTURE,character.getString("culture"));
             values.put(InfoGotContract.CharacterEntry.COLUMN_BORN,character.getString("born"));
             values.put(InfoGotContract.CharacterEntry.COLUMN_DIED,character.getString("died"));
+            values.put(InfoGotContract.CharacterEntry.COLUMN_PLAYEDBY,character.getJSONArray("playedBy").getString(0));
             String urlSpouse=character.getString("spouse");
             values.put(InfoGotContract.CharacterEntry.COLUMN_SPOUSE,urlSpouse.isEmpty() ? null : Integer.parseInt(urlSpouse.substring(urlSpouse.lastIndexOf("/") + 1)));
             String urlFather=character.getString("father");
@@ -304,6 +307,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for(int i=0;i<allegiances.length();i++){
                 insertMemberEntry(id,allegiances.getString(i));
             }
+            JSONArray tvSeries=character.getJSONArray("tvSeries");
+            for(int i=0;i<tvSeries.length();i++){
+                insertTVseriesEntry(id,tvSeries.getString(i));
+            }
         }
 
         private void insertMemberEntry(int idc, String urlIDH) {
@@ -322,6 +329,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.AliasEntry.COLUMN_IDC,idc);
             values.put(InfoGotContract.AliasEntry.COLUMN_ALIAS,alias);
             getContentResolver().insert(InfoGotContract.AliasEntry.CONTENT_URI,values);
+        }
+
+        private void insertTVseriesEntry(int idc, String season) {
+            if(season.isEmpty())
+                return;
+            ContentValues values=new ContentValues();
+            values.put(InfoGotContract.TVseriesEntry.COLUMN_IDC,idc);
+            values.put(InfoGotContract.TVseriesEntry.COLUMN_SEASON,season);
+            getContentResolver().insert(InfoGotContract.TVseriesEntry.CONTENT_URI,values);
         }
 
         private void insertCharacterTitlesEntry(int idc, String title) {
@@ -344,13 +360,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.HouseEntry.COLUMN_COATOFARMS,house.getString("coatOfArms"));
             values.put(InfoGotContract.HouseEntry.COLUMN_DIED,house.getString("diedOut"));
             values.put(InfoGotContract.HouseEntry.COLUMN_FOUDED,house.getString("founded"));
-            String urlOverlord=house.getString("spouse");
+            String urlOverlord=house.getString("overlord");
             values.put(InfoGotContract.HouseEntry.COLUMN_OVERLORD,urlOverlord.isEmpty() ? null : Integer.parseInt(urlOverlord.substring(urlOverlord.lastIndexOf("/") + 1)));
-            String urlHeir=house.getString("father");
+            String urlHeir=house.getString("heir");
             values.put(InfoGotContract.HouseEntry.COLUMN_HEIR,urlHeir.isEmpty() ? null : Integer.parseInt(urlHeir.substring(urlHeir.lastIndexOf("/") + 1)));
-            String urlLord=house.getString("mother");
+            String urlLord=house.getString("currentLord");
             values.put(InfoGotContract.HouseEntry.COLUMN_LORD,urlLord.isEmpty() ? null : Integer.parseInt(urlLord.substring(urlLord.lastIndexOf("/") + 1)));
-            String urlFounder=house.getString("spouse");
+            String urlFounder=house.getString("founder");
             values.put(InfoGotContract.HouseEntry.COLUMN_FOUNDER,urlFounder.isEmpty() ? null : Integer.parseInt(urlFounder.substring(urlFounder.lastIndexOf("/") + 1)));
             getContentResolver().insert(InfoGotContract.HouseEntry.CONTENT_URI,values);
 
