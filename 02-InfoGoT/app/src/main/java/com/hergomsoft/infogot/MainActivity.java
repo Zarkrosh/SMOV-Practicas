@@ -240,18 +240,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return Integer.parseInt(uriLast.getQueryParameter("page"));
         }
 
-        /*
-        methods for inserting entries on their tables and its related tables
+        /**
+         * methods for inserting entries on their tables and its related tables
          */
         private void insertBookEntry(JSONObject book) throws JSONException {
             ContentValues values=new ContentValues();
+            values.clear();
             String urlID=book.getString("url");
             int id=Integer.parseInt(urlID.substring(urlID.lastIndexOf("/") + 1));
             values.put(InfoGotContract.BookEntry._ID,id);
             values.put(InfoGotContract.BookEntry.COLUMN_NAME,book.getString("name"));
             values.put(InfoGotContract.BookEntry.COLUMN_RELEASED,book.getString("released"));
             values.put(InfoGotContract.BookEntry.COLUMN_NPAGES,book.getInt("numberOfPages"));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.BookEntry.CONTENT_URI,values);
 
             JSONArray characters=book.getJSONArray("characters");
@@ -270,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.AppearanceEntry.COLUMN_IDB,idb);
             values.put(InfoGotContract.AppearanceEntry.COLUMN_IDC,Integer.parseInt(urlIDC.substring(urlIDC.lastIndexOf("/") + 1)));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.AppearanceEntry.CONTENT_URI,values);
         }
 
@@ -291,7 +290,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.CharacterEntry.COLUMN_FATHER,urlFather.isEmpty() ? null : Integer.parseInt(urlFather.substring(urlFather.lastIndexOf("/") + 1)));
             String urlMother=character.getString("mother");
             values.put(InfoGotContract.CharacterEntry.COLUMN_MOTHER,urlMother.isEmpty() ? null : Integer.parseInt(urlMother.substring(urlMother.lastIndexOf("/") + 1)));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.CharacterEntry.CONTENT_URI,values);
 
             JSONArray characterTitles=character.getJSONArray("titles");
@@ -314,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.MemberEntry.COLUMN_IDC,idc);
             values.put(InfoGotContract.MemberEntry.COLUMN_IDH,Integer.parseInt(urlIDH.substring(urlIDH.lastIndexOf("/") + 1)));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.MemberEntry.CONTENT_URI,values);
         }
 
@@ -324,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.AliasEntry.COLUMN_IDC,idc);
             values.put(InfoGotContract.AliasEntry.COLUMN_ALIAS,alias);
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.AliasEntry.CONTENT_URI,values);
         }
 
@@ -334,7 +330,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.CharacterTitleEntry.COLUMN_IDC,idc);
             values.put(InfoGotContract.CharacterTitleEntry.COLUMN_TITLE,title);
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.CharacterTitleEntry.CONTENT_URI,values);
         }
 
@@ -357,7 +352,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.HouseEntry.COLUMN_LORD,urlLord.isEmpty() ? null : Integer.parseInt(urlLord.substring(urlLord.lastIndexOf("/") + 1)));
             String urlFounder=house.getString("spouse");
             values.put(InfoGotContract.HouseEntry.COLUMN_FOUNDER,urlFounder.isEmpty() ? null : Integer.parseInt(urlFounder.substring(urlFounder.lastIndexOf("/") + 1)));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.HouseEntry.CONTENT_URI,values);
 
             JSONArray HouseTitles=house.getJSONArray("titles");
@@ -384,7 +378,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.HouseTitleEntry.COLUMN_IDH,idh);
             values.put(InfoGotContract.HouseTitleEntry.COLUMN_TITLE,title);
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.HouseTitleEntry.CONTENT_URI,values);
         }
 
@@ -394,7 +387,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.SeatEntry.COLUMN_IDH,idh);
             values.put(InfoGotContract.SeatEntry.COLUMN_SEAT,seat);
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.SeatEntry.CONTENT_URI,values);
         }
 
@@ -404,7 +396,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.AncestralWeaponEntry.COLUMN_IDH,idh);
             values.put(InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON,weapon);
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.AncestralWeaponEntry.CONTENT_URI,values);
         }
 
@@ -414,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues values=new ContentValues();
             values.put(InfoGotContract.BranchEntry.COLUMN_IDH,idh);
             values.put(InfoGotContract.BranchEntry.COLUMN_IDHB,Integer.parseInt(urlIDHB.substring(urlIDHB.lastIndexOf("/") + 1)));
-            //TODO content uri or content type?
             getContentResolver().insert(InfoGotContract.BranchEntry.CONTENT_URI,values);
         }
     }

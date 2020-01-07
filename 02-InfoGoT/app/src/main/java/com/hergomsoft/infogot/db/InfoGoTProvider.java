@@ -231,85 +231,63 @@ public class InfoGoTProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         long _id;
-        Uri returnUri;
+        Uri returnUri=null;
 
         switch(sUriMatcher.match(uri)){
             case BOOK:
                 _id = db.insertWithOnConflict(InfoGotContract.BookEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.BookEntry.buildBookUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case APPEARANCE:
                 _id = db.insertWithOnConflict(InfoGotContract.AppearanceEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.AppearanceEntry.buildAppearanceUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case CHARACTER:
                 _id = db.insertWithOnConflict(InfoGotContract.CharacterEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.CharacterEntry.buildCharacterUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case CHARACTERTITLE:
                 _id = db.insertWithOnConflict(InfoGotContract.CharacterTitleEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.CharacterTitleEntry.buildCharacterTitleUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case ALIAS:
                 _id = db.insertWithOnConflict(InfoGotContract.AliasEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.AliasEntry.buildAliasUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case MEMBER:
                 _id = db.insertWithOnConflict(InfoGotContract.MemberEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.MemberEntry.buildMemberUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case HOUSE:
                 _id = db.insertWithOnConflict(InfoGotContract.HouseEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.HouseEntry.buildHouseUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case HOUSETITLE:
                 _id = db.insertWithOnConflict(InfoGotContract.HouseTitleEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.HouseTitleEntry.buildHouseTitleUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case SEAT:
                 _id = db.insertWithOnConflict(InfoGotContract.SeatEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.SeatEntry.buildSeatUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case ANCESTRALWEAPON:
                 _id = db.insertWithOnConflict(InfoGotContract.AncestralWeaponEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri = InfoGotContract.AncestralWeaponEntry.buildAncestralWeaponUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             case BRANCH:
                 _id = db.insertWithOnConflict(InfoGotContract.BranchEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if(_id > 0)
                     returnUri =  InfoGotContract.BranchEntry.buildBranchUri(_id);
-                else
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -317,7 +295,8 @@ public class InfoGoTProvider extends ContentProvider {
 
         // Use this on the URI passed into the function to notify any observers that the uri has
         // changed.
-        getContext().getContentResolver().notifyChange(uri, null);
+        if(_id!=-1)
+            getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
 
