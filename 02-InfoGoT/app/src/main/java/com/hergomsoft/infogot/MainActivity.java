@@ -47,10 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCharacters.setOnClickListener(this);
         btnHouses = (Button) findViewById(R.id.btnHouses);
         btnHouses.setOnClickListener(this);
-        // Downloads data from API if it's not already downloaded
-        //new DownloadTask().execute();
 
-        startService(new Intent(this, DoYouKnowService.class));
+        // Downloads data from API if it's not already downloaded
+        boolean downloaded = false;
+        if(!downloaded) {
+            //new DownloadTask().execute();
+        } else {
+            startService(new Intent(this, DoYouKnowService.class));
+        }
     }
 
     @Override
@@ -169,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     page++;
                 }
 
-                Log.d(TAG,"housees finished");
+                Log.d(TAG,"houses finished");
 
             } catch (MalformedURLException e) {
                 Log.d(TAG, "Malformed URL: " + e.toString());
@@ -198,6 +202,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this,
                     getResources().getString(R.string.downloadError), Toast.LENGTH_LONG).show();
             }
+
+            // Starts service
+            startService(new Intent(MainActivity.this, DoYouKnowService.class));
         }
 
         private String getResponse(String sUrl, int page) throws IOException {
