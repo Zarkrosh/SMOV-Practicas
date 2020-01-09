@@ -1,5 +1,6 @@
 package com.hergomsoft.infogot;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +34,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private ImageButton btnSettings;
     private Button btnBooks;
     private Button btnCharacters;
     private Button btnHouses;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // Link views
+        btnSettings = (ImageButton) findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(this);
         btnBooks = (Button) findViewById(R.id.btnBooks);
         btnBooks.setOnClickListener(this);
         btnCharacters = (Button) findViewById(R.id.btnCharacters);
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHouses.setOnClickListener(this);
 
         // Downloads data from API if it's not already downloaded
-        boolean downloaded = false;
+        boolean downloaded = true;
         if(!downloaded) {
             //new DownloadTask().execute();
         } else {
@@ -72,6 +78,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnHouses:
                 i = new Intent(this, HouseListActivity.class);
                 startActivity(i);
+                break;
+            case R.id.btnSettings:
+                final Dialog dialog = new Dialog(this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setContentView(R.layout.settings);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
+                break;
+            default:
+                Log.d(TAG, "Unknown click event source: " + v.getId());
                 break;
         }
     }
