@@ -1,6 +1,5 @@
 package com.hergomsoft.infogot;
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -16,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hergomsoft.infogot.components.CustomProgress;
+import com.hergomsoft.infogot.components.SettingsDialog;
 import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.services.DoYouKnowService;
 
@@ -34,6 +33,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private SettingsDialog settingsDialog;
+
     private ImageButton btnSettings;
     private Button btnBooks;
     private Button btnCharacters;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Creates settings dialog without showing it
+        settingsDialog = new SettingsDialog(this);
 
         // Link views
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);
@@ -80,12 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.btnSettings:
-                final Dialog dialog = new Dialog(this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                dialog.setContentView(R.layout.settings);
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
+                settingsDialog.show();
                 break;
             default:
                 Log.d(TAG, "Unknown click event source: " + v.getId());

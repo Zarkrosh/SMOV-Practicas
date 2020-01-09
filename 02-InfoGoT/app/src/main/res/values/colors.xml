@@ -6,4 +6,6 @@
     <color name="colorCharacter">#F44336</color>
     <color name="colorHouse">#A941FA3B</color>
 
+    <color name="activeTimeout">#000</color>
+    <color name="inactiveTimeout">#AAA</color>
 </resources>
