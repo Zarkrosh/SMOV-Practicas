@@ -1,6 +1,8 @@
 package com.hergomsoft.infogot;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.ListFragment;
+
+import com.hergomsoft.infogot.db.InfoGotContract;
 
 import java.util.ArrayList;
 
@@ -102,5 +106,14 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         // Not used
+    }
+
+    private Cursor getCharacters(String filter){
+        Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.CharacterEntry.COLUMN_NAME, InfoGotContract.CharacterEntry._ID};
+        String selection = InfoGotContract.CharacterEntry.COLUMN_NAME + " like '%" + filter+ "%'";
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 }

@@ -1,6 +1,8 @@
 package com.hergomsoft.infogot;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.ListFragment;
 
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.domain.House;
 
 import java.util.ArrayList;
@@ -105,4 +108,12 @@ public class HouseListFragment extends ListFragment implements TextWatcher {
         // Not used
     }
 
+    private Cursor getHouses(String filter){
+        Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.HouseEntry.COLUMN_NAME, InfoGotContract.HouseEntry._ID};
+        String selection = InfoGotContract.HouseEntry.COLUMN_NAME + " like '%" + filter + "%'";
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
 }
