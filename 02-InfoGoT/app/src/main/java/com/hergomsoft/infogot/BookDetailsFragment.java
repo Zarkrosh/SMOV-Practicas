@@ -2,6 +2,7 @@ package com.hergomsoft.infogot;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.hergomsoft.infogot.components.NonScrollListView;
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
 
 import java.io.UnsupportedEncodingException;
@@ -74,9 +76,8 @@ public class BookDetailsFragment extends Fragment {
         // TODO Configurar vista a partir del modelo
 
 
-
         // TODO Datos desde BD
-        String[] values = new String[] { "Jon Snow", "Daenerys Targaryen", "Arya Stark", "Sansa Stark"};
+        String[] values = new String[]{"Jon Snow", "Daenerys Targaryen", "Arya Stark", "Sansa Stark"};
         ArrayAdapter<String> asw = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, values);
         characters.setAdapter(asw);
@@ -96,5 +97,23 @@ public class BookDetailsFragment extends Fragment {
         return view;
     }
 
+    private Cursor getBook(int id) {
+        Uri uri = InfoGotContract.BookEntry.buildBookUri(id);
+        String[] projection = new String[]{"*"};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
 
+    private Cursor getCharacters(int idb){
+        Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.CharacterEntry._ID, InfoGotContract.CharacterEntry.COLUMN_NAME};
+        String selection = InfoGotContract.CharacterEntry._ID + "=(SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDC  +
+                " FROM "+ InfoGotContract.AppearanceEntry.TABLE_NAME+" A " +
+                "WHERE A." + InfoGotContract.AppearanceEntry.COLUMN_IDB+"= ?)";
+        String[] selectionArgs = new String[]{String.valueOf(idb)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
 }

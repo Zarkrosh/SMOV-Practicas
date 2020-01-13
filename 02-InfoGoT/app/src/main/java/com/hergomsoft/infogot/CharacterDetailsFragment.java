@@ -2,7 +2,9 @@ package com.hergomsoft.infogot;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.hergomsoft.infogot.components.NonScrollListView;
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
 
 import java.io.UnsupportedEncodingException;
@@ -166,4 +169,61 @@ public class CharacterDetailsFragment extends Fragment {
         return view;
     }
 
+    private Cursor getCharacter(int id){
+        Uri uri = InfoGotContract.CharacterEntry.buildCharacterUri(id);
+        String[] projection = new String[]{"*"};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getTVseries(int idc){
+        Uri uri = InfoGotContract.TVseriesEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.TVseriesEntry.COLUMN_SEASON};
+        String selection = InfoGotContract.TVseriesEntry.COLUMN_IDC+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idc)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getTitles(int idc){
+        Uri uri = InfoGotContract.CharacterTitleEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.CharacterTitleEntry.COLUMN_TITLE};
+        String selection = InfoGotContract.CharacterTitleEntry.COLUMN_IDC+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idc)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getAliases(int idc){
+        Uri uri = InfoGotContract.AliasEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.AliasEntry.COLUMN_ALIAS};
+        String selection = InfoGotContract.AliasEntry.COLUMN_IDC+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idc)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getBooks(int idc){
+        Uri uri = InfoGotContract.BookEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.BookEntry._ID, InfoGotContract.BookEntry.COLUMN_NAME};
+        String selection = InfoGotContract.BookEntry._ID + "=(SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDB +
+                " FROM "+ InfoGotContract.AppearanceEntry.TABLE_NAME+" A " +
+                "WHERE A." + InfoGotContract.AppearanceEntry.COLUMN_IDC+"= ?)";
+        String[] selectionArgs = new String[]{String.valueOf(idc)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getHouses(int idc){
+        Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_NAME};
+        String selection = InfoGotContract.HouseEntry._ID + "=(SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDH+
+                " FROM "+InfoGotContract.MemberEntry.TABLE_NAME+" M " +
+                "WHERE M." +InfoGotContract.MemberEntry.COLUMN_IDC+"= ?)";
+        String[] selectionArgs = new String[]{String.valueOf(idc)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
 }

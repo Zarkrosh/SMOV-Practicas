@@ -2,7 +2,9 @@ package com.hergomsoft.infogot;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.hergomsoft.infogot.components.NonScrollListView;
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
 
 
@@ -161,4 +164,70 @@ public class HouseDetailsFragment extends Fragment {
         return view;
     }
 
+    private Cursor getHouse(int id){
+        Uri uri = InfoGotContract.HouseEntry.buildHouseUri(id);
+        String[] projection = new String[]{"*"};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getTitles(int idh){
+        Uri uri = InfoGotContract.HouseTitleEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.HouseTitleEntry.COLUMN_TITLE};
+        String selection = InfoGotContract.HouseTitleEntry.COLUMN_IDH+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idh)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getSeats(int idh){
+        Uri uri = InfoGotContract.SeatEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.SeatEntry.COLUMN_SEAT};
+        String selection = InfoGotContract.SeatEntry.COLUMN_IDH+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idh)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getAncestralWeapons(int idh){
+        Uri uri = InfoGotContract.AncestralWeaponEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON};
+        String selection = InfoGotContract.AncestralWeaponEntry.COLUMN_IDH+"= ?";
+        String[] selectionArgs = new String[]{String.valueOf(idh)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getCharacter(int id){
+        Uri uri = InfoGotContract.CharacterEntry.buildCharacterUri(id);
+        String[] projection = new String[]{InfoGotContract.CharacterEntry._ID,InfoGotContract.CharacterEntry.COLUMN_NAME};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getBranches(int idh){
+        Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_NAME};
+        String selection = InfoGotContract.HouseEntry._ID + "=(SELECT B."+InfoGotContract.BranchEntry.COLUMN_IDHB+
+                " FROM "+InfoGotContract.BranchEntry.TABLE_NAME+" B " +
+                "WHERE B." +InfoGotContract.BranchEntry.COLUMN_IDH+"= ?)";
+        String[] selectionArgs = new String[]{String.valueOf(idh)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private Cursor getMembers(int idh){
+        Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.CharacterEntry._ID, InfoGotContract.CharacterEntry.COLUMN_NAME};
+        String selection = InfoGotContract.CharacterEntry._ID + "=(SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDC+
+                " FROM "+InfoGotContract.MemberEntry.TABLE_NAME+" M " +
+                "WHERE M." +InfoGotContract.MemberEntry.COLUMN_IDH+"= ?)";
+        String[] selectionArgs = new String[]{String.valueOf(idh)};
+        String sortOrder = null;
+        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
 }
