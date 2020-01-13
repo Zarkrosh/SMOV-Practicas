@@ -3,6 +3,7 @@ package com.hergomsoft.infogot.services;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.util.Log;
@@ -10,9 +11,11 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
 
 import com.hergomsoft.infogot.HouseDetailsActivity;
 import com.hergomsoft.infogot.R;
+import com.hergomsoft.infogot.components.SettingsDialog;
 import com.hergomsoft.infogot.domain.House;
 
 import java.util.ArrayList;
@@ -28,7 +31,6 @@ public class DoYouKnowService extends IntentService {
     private final String NOTIFICATION_TITLE = "Do you know";
     private final String NOTIFICATION_TEXT_BEGIN = "Which house has the words: ";
 
-    private final int DEFAULT_DELAY = 60000; // Wait between updates (ms)
     private boolean runFlag = false;
 
     private final Intent anotherIntent = new Intent("com.hergomsoft.ANOTHER_QUIZ");
@@ -84,7 +86,12 @@ public class DoYouKnowService extends IntentService {
 
         runFlag = true;
         while(runFlag) {
-            // TODO Obtain configuration from preferences
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            runFlag = preferences.getBoolean(getString(R.string.prefNotificationsEnabled), SettingsDialog.DEFAULT_ENABLED_NOTIFICATIONS);
+            int timeout = preferences.getInt(getString(R.string.prefQuizTimeout), SettingsDialog.DEFAULT_QUIZ_TIMEOUT);
+            Log.d(TAG, "Timeout: " + timeout);
+
+            if(!runFlag) continue;
 
             try {
                 if(houses.size() > 0) {
@@ -114,7 +121,7 @@ public class DoYouKnowService extends IntentService {
                     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
                     notificationManagerCompat.notify(NOTIFICATION_ID, notification);
 
-                    Thread.sleep(DEFAULT_DELAY);
+                    Thread.sleep(timeout * 1000);
                 } else {
                     Log.d(TAG, "No houses in list. Stopping service");
                     runFlag = false;

@@ -1,5 +1,9 @@
 <resources>
 
+    <!-- Shared preferences -->
+    <string name="prefNotificationsEnabled">notifEnabled</string>
+    <string name="prefQuizTimeout">quizTimeout</string>
+
     <!-- Main -->
     <string name="app_name">InfoGoT</string>
     <string name="description">Tiny info app about the Game of Thrones world</string>
@@ -15,7 +19,6 @@
     <string name="charactersList">List of characters</string>
     <string name="housesList">List of houses</string>
     <string name="search">Search:</string>
-
 
     <!-- Book details -->
     <string name="idBook">idBook</string>
@@ -54,4 +57,12 @@
     <string name="ancestral_weapons">Ancestral weapons</string>
     <string name="cadet_branches">Cadet branches</string>
     <string name="sworn_members">Sworn members</string>
+
+    <!-- Notifications -->
+    <string name="notifications">Notifications</string>
+    <string name="quiz_notifications">Quiz notifications</string>
+    <string name="ask_me_every">Ask me every</string>
+    <string name="save">Save</string>
+    <!---->
+
 </resources>
