@@ -9,42 +9,32 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.fragment.app.ListFragment;
 
 import com.hergomsoft.infogot.db.InfoGotContract;
 
-import java.util.ArrayList;
-
 
 public class CharacterListFragment extends ListFragment implements TextWatcher {
-
-    ArrayList<String> allCharacterNames;
-    ArrayList<String> matches;
-
-    TextView noResults;
+    private SimpleCursorAdapter adapter;
+    private TextView noResults;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // TODO Obtener datos desde la BD
-        allCharacterNames = new ArrayList<>();
-        allCharacterNames.add("Jon Snow");
-        allCharacterNames.add("Daenerys Targaryen");
-        allCharacterNames.add("Arya Stark");
-        allCharacterNames.add("Sansa Stark");
-
-        matches = (ArrayList<String>) allCharacterNames.clone();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, matches);
-
+        String[] from = new String[] { InfoGotContract.CharacterEntry.COLUMN_NAME };
+        int[] to = new int[] { android.R.id.text1 };
+        adapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
         setListAdapter(adapter);
+
+        // Get all characters by default
+        filterResults("");
     }
 
     @Override
@@ -69,29 +59,18 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
         startActivity(i);
     }
 
-    /**
-     * Searches for a substring in the result list and displays matches.
-     * @param search Search substring
-     */
     public void filterResults(String search) {
-        String upper = search.toUpperCase();
-        matches.clear();
+        Cursor filtered = getCharacters(search);
+        adapter.changeCursor(filtered);
 
-        for(String s : allCharacterNames) {
-            if(s.toUpperCase().contains(upper)) matches.add(s);
-        }
-
-        if(matches.isEmpty()) {
+        if(filtered.getCount() == 0) {
             // Shows no results message
             noResults.setVisibility(View.VISIBLE);
         } else {
             // Hides possible results message
             noResults.setVisibility(View.GONE);
         }
-
-        ((BaseAdapter) getListAdapter()).notifyDataSetChanged();
     }
-
 
     @Override
     public void afterTextChanged(Editable s) {
@@ -111,9 +90,10 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
     private Cursor getCharacters(String filter){
         Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.CharacterEntry.COLUMN_NAME, InfoGotContract.CharacterEntry._ID};
-        String selection = InfoGotContract.CharacterEntry.COLUMN_NAME + " like '%" + filter+ "%'";
+        String selection = InfoGotContract.CharacterEntry.COLUMN_NAME + " like '%" + filter + "%'";
         String[] selectionArgs = null;
-        String sortOrder = null;
+        String sortOrder = InfoGotContract.CharacterEntry.COLUMN_NAME + " ASC";
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
+
 }

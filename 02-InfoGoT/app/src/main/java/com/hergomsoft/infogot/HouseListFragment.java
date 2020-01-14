@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.fragment.app.ListFragment;
@@ -24,27 +25,21 @@ import java.util.ArrayList;
 
 
 public class HouseListFragment extends ListFragment implements TextWatcher {
-
-    ArrayList<String> allHousesNames;
-    ArrayList<String> matches;
-
-    TextView noResults;
+    private SimpleCursorAdapter adapter;
+    private TextView noResults;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // TODO Obtener datos desde la BD
-        allHousesNames = new ArrayList<>();
-        allHousesNames.add("Stark");
-        allHousesNames.add("Lannister");
-        allHousesNames.add("Arryn");
-
-        matches = (ArrayList<String>) allHousesNames.clone();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, matches);
-
+        String[] from = new String[] { InfoGotContract.HouseEntry.COLUMN_NAME };
+        int[] to = new int[] { android.R.id.text1 };
+        adapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
         setListAdapter(adapter);
+
+        // Get all houses by default
+        filterResults("");
     }
 
     @Override
@@ -69,27 +64,17 @@ public class HouseListFragment extends ListFragment implements TextWatcher {
         startActivity(i);
     }
 
-    /**
-     * Searches for a substring in the result list and displays matches.
-     * @param search Search substring
-     */
     public void filterResults(String search) {
-        String upper = search.toUpperCase();
-        matches.clear();
+        Cursor filtered = getHouses(search);
+        adapter.changeCursor(filtered);
 
-        for(String s : allHousesNames) {
-            if(s.toUpperCase().contains(upper)) matches.add(s);
-        }
-
-        if(matches.isEmpty()) {
+        if(filtered.getCount() == 0) {
             // Shows no results message
             noResults.setVisibility(View.VISIBLE);
         } else {
             // Hides possible results message
             noResults.setVisibility(View.GONE);
         }
-
-        ((BaseAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
 
