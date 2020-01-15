@@ -30,11 +30,8 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
         String[] from = new String[] { InfoGotContract.CharacterEntry.COLUMN_NAME };
         int[] to = new int[] { android.R.id.text1 };
         adapter = new SimpleCursorAdapter(
-                getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
+                getActivity(), android.R.layout.simple_list_item_1, getCharacters(""), from, to, 0);
         setListAdapter(adapter);
-
-        // Get all characters by default
-        filterResults("");
     }
 
     @Override
@@ -53,9 +50,9 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //House clicked = (House) getListAdapter().getItem(position);
+        Cursor clicked = (Cursor) getListAdapter().getItem(position);
         Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-        //i.putExtra(getResources().getString(R.string.idBook), clicked.getId());
+        i.putExtra(getResources().getString(R.string.idCharacter), clicked.getString(0));
         startActivity(i);
     }
 
@@ -89,7 +86,7 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
 
     private Cursor getCharacters(String filter){
         Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
-        String[] projection = new String[]{InfoGotContract.CharacterEntry.COLUMN_NAME, InfoGotContract.CharacterEntry._ID};
+        String[] projection = new String[]{InfoGotContract.CharacterEntry._ID, InfoGotContract.CharacterEntry.COLUMN_NAME};
         String selection = InfoGotContract.CharacterEntry.COLUMN_NAME + " like '%" + filter + "%'";
         String[] selectionArgs = null;
         String sortOrder = InfoGotContract.CharacterEntry.COLUMN_NAME + " ASC";
