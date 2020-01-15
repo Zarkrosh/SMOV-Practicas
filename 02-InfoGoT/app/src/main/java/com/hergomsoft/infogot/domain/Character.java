@@ -10,112 +10,88 @@ import java.util.List;
 
 public class Character {
 
-    private int idc;
+    private Integer id;
     private String name;
     private String gender;
     private String culture;
     private String born;
     private String died;
-    private List<String> titles;
-    private List<String> aliases;
-    private List<House> allegiances;
-    private Character spouse;
-    private Character father;
-    private Character mother;
-    private List<Book> books;
+    private Integer spouse;
+    private Integer father;
+    private Integer mother;
 
-    public Character(JSONObject json){
-        try{
-            String url = json.getString("url");
-            idc = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1));
-            name = json.getString("name");
-            gender = json.getString("gender");
-            culture = json.getString("culture");
-            born = json.getString("born");
-            died = json.getString("diedOut");
-            titles = new ArrayList<>();
-            JSONArray jtitles=json.getJSONArray("titles");
-            for (int i=0;i<jtitles.length();i++)
-                titles.add(jtitles.get(i).toString());
-            aliases = new ArrayList<>();
-            JSONArray jaliases=json.getJSONArray("aliases");
-            for (int i=0;i<jtitles.length();i++)
-                aliases.add(jaliases.get(i).toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    //TODO cosnstructor: vacio, estandar, basado en cursor o varios a la vez
+    public Character(){}
 
+    public Integer getId() {
+        return id;
     }
 
-    public void setAllegiances(List<House> allegiances) {
-        this.allegiances = allegiances;
-    }
-
-    public void setSpouse(Character spouse) {
-        this.spouse = spouse;
-    }
-
-    public void setFather(Character father) {
-        this.father = father;
-    }
-
-    public void setMother(Character mother) {
-        this.mother = mother;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public int getIdc() {
-        return idc;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getGender() {
         return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getCulture() {
         return culture;
     }
 
+    public void setCulture(String culture) {
+        this.culture = culture;
+    }
+
     public String getBorn() {
         return born;
+    }
+
+    public void setBorn(String born) {
+        this.born = born;
     }
 
     public String getDied() {
         return died;
     }
 
-    public List<String> getTitles() {
-        return titles;
+    public void setDied(String died) {
+        this.died = died;
     }
 
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public List<House> getAllegiances() {
-        return allegiances;
-    }
-
-    public Character getSpouse() {
+    public Integer getSpouse() {
         return spouse;
     }
 
-    public Character getFather() {
+    public void setSpouse(Integer spouse) {
+        this.spouse = spouse;
+    }
+
+    public Integer getFather() {
         return father;
     }
 
-    public Character getMother() {
+    public void setFather(Integer father) {
+        this.father = father;
+    }
+
+    public Integer getMother() {
         return mother;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public void setMother(Integer mother) {
+        this.mother = mother;
     }
 }

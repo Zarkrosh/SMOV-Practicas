@@ -30,11 +30,8 @@ public class BookListFragment extends ListFragment implements TextWatcher {
         String[] from = new String[] { InfoGotContract.BookEntry.COLUMN_NAME };
         int[] to = new int[] { android.R.id.text1 };
         adapter = new SimpleCursorAdapter(
-                getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
+                getActivity(), android.R.layout.simple_list_item_1, getBooks(""), from, to, 0);
         setListAdapter(adapter);
-
-        // Get all books by default
-        filterResults("");
     }
 
     @Override
@@ -53,9 +50,9 @@ public class BookListFragment extends ListFragment implements TextWatcher {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //Book clicked = (Book) getListAdapter().getItem(position);
+        Cursor clicked = (Cursor) getListAdapter().getItem(position);
         Intent i = new Intent(getActivity(), BookDetailsActivity.class);
-        //i.putExtra(getResources().getString(R.string.idBook), clicked.getId());
+        i.putExtra(getResources().getString(R.string.idBook), clicked.getString(0));
         startActivity(i);
     }
 
@@ -89,7 +86,7 @@ public class BookListFragment extends ListFragment implements TextWatcher {
 
     private Cursor getBooks(String filter){
         Uri uri = InfoGotContract.BookEntry.CONTENT_URI;
-        String[] projection = new String[]{InfoGotContract.BookEntry.COLUMN_NAME, InfoGotContract.BookEntry._ID};
+        String[] projection = new String[]{InfoGotContract.BookEntry._ID, InfoGotContract.BookEntry.COLUMN_NAME};
         String selection = InfoGotContract.BookEntry.COLUMN_NAME + " like '%" + filter + "%'";
         String[] selectionArgs = null;
         String sortOrder = null;

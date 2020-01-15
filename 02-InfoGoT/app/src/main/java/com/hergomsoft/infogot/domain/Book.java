@@ -1,52 +1,55 @@
 package com.hergomsoft.infogot.domain;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.List;
 
 public class Book {
 
-    private int idb;
+    private Integer id;
     private String name;
-    private int npages;
+    private Integer npages;
     private String released;
-    private List<Character> characters;
+    private String author;
 
-    public Book(JSONObject json){
-        try {
-            String url = json.getString("url");
-            idb = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1));
-            name = json.getString("name");
-            npages = json.getInt("numberOfPages");
-            released = json.getString("released");
-            released = released.substring(0, released.length() - 9);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    //TODO cosnstructor: vacio, estandar, basado en cursor o varios a la vez
+    public Book(){}
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCharacters(List<Character> characters) {
-        this.characters = characters;
-    }
-
-    public int getIdb() {
-        return idb;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getNpages() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getNpages() {
         return npages;
+    }
+
+    public void setNpages(Integer npages) {
+        this.npages = npages;
     }
 
     public String getReleased() {
         return released;
     }
 
-    public List<Character> getCharacters() {
-        return characters;
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
