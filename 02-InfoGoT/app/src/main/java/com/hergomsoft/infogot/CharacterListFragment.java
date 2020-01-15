@@ -53,9 +53,11 @@ public class CharacterListFragment extends ListFragment implements TextWatcher {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //House clicked = (House) getListAdapter().getItem(position);
+        Cursor cursor = adapter.getCursor();
+        cursor.moveToPosition(position);
+        int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.CharacterEntry._ID));
         Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-        //i.putExtra(getResources().getString(R.string.idBook), clicked.getId());
+        i.putExtra(getResources().getString(R.string.idCharacter), clickedId);
         startActivity(i);
     }
 

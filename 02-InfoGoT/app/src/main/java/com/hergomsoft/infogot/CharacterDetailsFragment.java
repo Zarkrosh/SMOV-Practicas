@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +34,19 @@ public class CharacterDetailsFragment extends Fragment {
 
     private ImageView characterImage;
 
+    private Cursor cursorCharacter;
+    private int idCharacter;
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
-        String idCharacter = getActivity().getIntent().getStringExtra(getResources().getString(R.string.idCharacter));
-        // TODO Obtener datos desde la BD
-
+        idCharacter = getActivity().getIntent().getIntExtra(getResources().getString(R.string.idCharacter), -1);
+        cursorCharacter = getCharacter(idCharacter);
+        if(cursorCharacter == null) {
+            Log.d(TAG, "No cursor character");
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -81,31 +88,46 @@ public class CharacterDetailsFragment extends Fragment {
         LinearLayout layoutTVSeries = (LinearLayout) view.findViewById(R.id.layoutTVSeries);
         TextView tvSeries = (TextView) view.findViewById(R.id.tvSeries);
 
-        // Scraps first result image in Google Images
-        String debugCharacterName = "site:gameofthrones.fandom.com Jon Snow";
-        try {
-            ScrappingTask scrTask = new ScrappingTask(debugCharacterName);
-            scrTask.setTargetImageView(characterImage);
-            scrTask.execute();
-        } catch (UnsupportedEncodingException e) {
-            Log.d(TAG, "Scrapping of character image failed: " + e.getMessage());
-        }
+        // Gets data
+        cursorCharacter.moveToFirst();
+        final String sName = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_NAME));
+        Log.d(TAG, sName);
+        String sGender = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_GENDER));
+        String sCulture = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_CULTURE));
+        String sBorn = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_BORN));
+        String sDied = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_DIED));
+        String sFather = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_FATHER));
+        String sMother = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_MOTHER));
+        String sSpouse = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_SPOUSE));
+        String[] sTitles = getTitles(idCharacter);
+        String[] sAliases = getAliases(idCharacter);
+        Cursor cAllegiances = getAllegiances(idCharacter);
+        Cursor cBooks = getBooks(idCharacter);
+        //String[] sTvSeries = getTVseries(idCharacter);
 
-        // Browse on the internet if button clicked
-        browse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO String query = characterName + " character";
-                String query = "Jon Snow character";
-                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, query); // query contains search string
-                startActivity(intent);
-            }
-        });
+        // Configures view from data
+        name.setText(sName);
+        gender.setText(sGender);
+        culture.setText(sCulture);
+        born.setText(sBorn);
+        died.setText(sDied);
+        father.setText(sFather);
+        mother.setText(sMother);
+        spouse.setText(sSpouse);
+        titles.setText(joinStrings("\n", sTitles));
+        aliases.setText(joinStrings("\n", sAliases));
+        //tvSeries.setText(joinStrings("\n", sTvSeries));
 
-
-        // TODO Configurar vista a partir del modelo
-
+        if(sDied == null || sDied.isEmpty()) rowDied.setVisibility(View.GONE);
+        if(sFather == null || sFather.isEmpty()) rowFather.setVisibility(View.GONE);
+        if(sMother == null || sMother.isEmpty()) rowMother.setVisibility(View.GONE);
+        if(sMother == null || sSpouse.isEmpty()) rowSpouse.setVisibility(View.GONE);
+        if(false) rowPlayedBy.setVisibility(View.GONE);
+        if(sTitles.length == 0) layoutTitles.setVisibility(View.GONE);
+        if(sAliases.length == 0) layoutAliases.setVisibility(View.GONE);
+        if(cAllegiances.getCount() == 0) layoutAllegiances.setVisibility(View.GONE);
+        if(cBooks.getCount() == 0) layoutBooks.setVisibility(View.GONE);
+        //if(sTvSeries.length == 0) layoutTVSeries.setVisibility(View.GONE);
 
         // TODO Onclick para mostrar detalles
         // Underline to indicate link
@@ -116,55 +138,64 @@ public class CharacterDetailsFragment extends Fragment {
         father.setPaintFlags(father.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
-        // TODO Comprobar si no hay
-        if(false) rowDied.setVisibility(View.GONE);
-        if(false) rowFather.setVisibility(View.GONE);
-        if(false) rowMother.setVisibility(View.GONE);
-        if(false) rowSpouse.setVisibility(View.GONE);
-        if(false) rowPlayedBy.setVisibility(View.GONE);
-        if(false) layoutTitles.setVisibility(View.GONE);
-        if(false) layoutAliases.setVisibility(View.GONE);
-        if(false) layoutAllegiances.setVisibility(View.GONE);
-        if(false) layoutBooks.setVisibility(View.GONE);
-        if(false) layoutTVSeries.setVisibility(View.GONE);
-
-
-        // TODO Datos desde BD
-        String[] all = new String[] { "House Stark of Winterfell"};
-        ArrayAdapter<String> asw = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, all);
-        allegiances.setAdapter(asw);
+        Log.d(TAG, "Allegiances count: " + cAllegiances.getCount());
+        String[] fromAll = new String[] { InfoGotContract.HouseEntry.COLUMN_NAME };
+        int[] toAll = new int[] { android.R.id.text1 };
+        final SimpleCursorAdapter adapterAllegiances = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, fromAll, toAll, 0);
+        adapterAllegiances.changeCursor(cAllegiances);
+        allegiances.setAdapter(adapterAllegiances);
         allegiances.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = (String) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-
-                //House clicked = (House) parent.getAdapter().getItem(position);
+                Cursor cursor = adapterAllegiances.getCursor();
+                cursor.moveToPosition(position);
+                int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.HouseEntry._ID));
                 Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
-                //i.putExtra(getResources().getString(R.string.idHouse), clicked.getId());
+                i.putExtra(getResources().getString(R.string.idHouse), clickedId);
                 startActivity(i);
             }
         });
 
-        // TODO Datos desde BD
-        String[] boo = new String[] { "A Game of Thrones", "A Clash of Kings"};
-        ArrayAdapter<String> aboo = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, boo);
-        books.setAdapter(aboo);
+        Log.d(TAG, "Books count: " + cBooks.getCount());
+        String[] fromBoo = new String[] { InfoGotContract.BookEntry.COLUMN_NAME };
+        int[] toBoo = new int[] { android.R.id.text1 };
+        final SimpleCursorAdapter adapterBooks = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, fromBoo, toBoo, 0);
+        adapterBooks.changeCursor(cBooks);
+        books.setAdapter(adapterBooks);
         books.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = (String) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-
-                //House clicked = (House) parent.getAdapter().getItem(position);
+                Cursor cursor = adapterBooks.getCursor();
+                cursor.moveToPosition(position);
+                int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.BookEntry._ID));
                 Intent i = new Intent(getActivity(), BookDetailsActivity.class);
-                //i.putExtra(getResources().getString(R.string.idHouse), clicked.getId());
+                i.putExtra(getResources().getString(R.string.idBook), clickedId);
                 startActivity(i);
             }
         });
 
+        // Scraps first result image in Google Images
+        String debugCharacterName = "site:gameofthrones.fandom.com image " + sName;
+        try {
+            ScrappingTask scrTask = new ScrappingTask(debugCharacterName);
+            scrTask.setTargetImageView(characterImage);
+            scrTask.execute();
+        } catch (UnsupportedEncodingException e) {
+            Log.d(TAG, "Scrapping of character image failed: " + e.getMessage());
+        }
+
+        // Browse on the internet if button clicked
+        final String query = sName + " character ice and fire";
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -178,31 +209,34 @@ public class CharacterDetailsFragment extends Fragment {
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    private Cursor getTVseries(int idc){
+    private String[] getTVseries(int idc){
         Uri uri = InfoGotContract.TVseriesEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.TVseriesEntry.COLUMN_SEASON};
         String selection = InfoGotContract.TVseriesEntry.COLUMN_IDC+"= ?";
         String[] selectionArgs = new String[]{String.valueOf(idc)};
         String sortOrder = null;
-        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        return getStringArrayFromCursor(cursor);
     }
 
-    private Cursor getTitles(int idc){
+    private String[] getTitles(int idc){
         Uri uri = InfoGotContract.CharacterTitleEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.CharacterTitleEntry.COLUMN_TITLE};
         String selection = InfoGotContract.CharacterTitleEntry.COLUMN_IDC+"= ?";
         String[] selectionArgs = new String[]{String.valueOf(idc)};
         String sortOrder = null;
-        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        return getStringArrayFromCursor(cursor);
     }
 
-    private Cursor getAliases(int idc){
+    private String[] getAliases(int idc){
         Uri uri = InfoGotContract.AliasEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.AliasEntry.COLUMN_ALIAS};
         String selection = InfoGotContract.AliasEntry.COLUMN_IDC+"= ?";
         String[] selectionArgs = new String[]{String.valueOf(idc)};
         String sortOrder = null;
-        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        return getStringArrayFromCursor(cursor);
     }
 
     private Cursor getBooks(int idc){
@@ -216,7 +250,7 @@ public class CharacterDetailsFragment extends Fragment {
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    private Cursor getHouses(int idc){
+    private Cursor getAllegiances(int idc){
         Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_NAME};
         String selection = InfoGotContract.HouseEntry._ID + "=(SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDH+
@@ -225,5 +259,25 @@ public class CharacterDetailsFragment extends Fragment {
         String[] selectionArgs = new String[]{String.valueOf(idc)};
         String sortOrder = null;
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private String[] getStringArrayFromCursor(Cursor cursor) {
+        cursor.moveToFirst();
+        String[] result = new String[cursor.getCount()];
+        for(int i = 0; i < result.length; i++) {
+            result[i] = cursor.getString(0);
+            cursor.moveToNext();
+        }
+
+        return result;
+    }
+
+    private String joinStrings(String separator, String[] strings) {
+        String res = "";
+        if(strings.length > 0) {
+            for (String s : strings) res += s + "\n";
+            res = res.substring(0, res.length() - 1);
+        }
+        return res;
     }
 }
