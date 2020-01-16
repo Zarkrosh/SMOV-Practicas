@@ -59,7 +59,7 @@ public class BookDetailsFragment extends Fragment {
         // Gets data
         for(String s : cursorBook.getColumnNames()) Log.d(TAG, "Col " + s);
         cursorBook.moveToFirst();
-        final String sName = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NAME));
+        String sName = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NAME));
         String sReleaseDate = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_RELEASED));
         //String sAuthors = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_AUTHOR)); // TODO No column in cursor!
         String sNumberOfPages = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NPAGES));
@@ -101,12 +101,12 @@ public class BookDetailsFragment extends Fragment {
         }
 
         // Browse on the internet if button clicked
+        final String querySearch = sName + " book";
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = sName + " book";
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                intent.putExtra(SearchManager.QUERY, querySearch); // query contains search string
                 startActivity(intent);
             }
         });

@@ -11,13 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -31,13 +30,19 @@ public class HouseDetailsFragment extends Fragment {
 
     private ImageView coatImage;
 
+    private Cursor cursorHouse;
+    private int idHouse;
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
-        String idHouse = getActivity().getIntent().getStringExtra(getResources().getString(R.string.idHouse));
-        // TODO Obtener datos desde la BD
-
+        idHouse = getActivity().getIntent().getIntExtra(getResources().getString(R.string.idHouse), -1);
+        cursorHouse = getHouse(idHouse);
+        if(cursorHouse == null) {
+            Log.d(TAG, "No cursor house");
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -82,8 +87,95 @@ public class HouseDetailsFragment extends Fragment {
         LinearLayout layoutSwornMembers = (LinearLayout) view.findViewById(R.id.layoutSwornMembers);
         NonScrollListView swornMembers = (NonScrollListView) view.findViewById(R.id.swornMembers);
 
+
+        // Gets data
+        for(String s : cursorHouse.getColumnNames()) Log.d(TAG, "Col " + s);
+        String sName = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_NAME));
+        String sCoat = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_COATOFARMS));
+        String sWords = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_WORDS));
+        String sRegion = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_REGION));
+        String sLord = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_LORD));
+        String sOverlord = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_OVERLORD));
+        String sHeir = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_HEIR));
+        String sFounded = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_FOUDED));
+        String sFounder = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_FOUNDER));
+        String sDied = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_DIED));
+        String[] sTitles = getTitles(idHouse);
+        String[] sWeapons = getAncestralWeapons(idHouse);
+        Cursor cCadetBranches = getBranches(idHouse);
+        Cursor cSwornMembers = getMembers(idHouse);
+
+        // Configures view from data
+        name.setText(sName);
+        coatDescription.setText(sCoat);
+        words.setText(sWords);
+        region.setText(sRegion);
+        currentLord.setText(sLord);
+        overlord.setText(sOverlord);
+        heir.setText(sHeir);
+        founded.setText(sFounded);
+        founder.setText(sFounder);
+        diedOut.setText(sDied);
+        titles.setText(joinStrings("\n", sTitles));
+        ancestralWeapons.setText(joinStrings("\n", sWeapons));
+
+        // TODO Onclick para mostrar detalles
+        // Underline to indicate link
+        currentLord.setPaintFlags(currentLord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        overlord.setPaintFlags(overlord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        heir.setPaintFlags(heir.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        founder.setPaintFlags(founder.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        // Hides void sections
+        if (sLord == null || sLord.isEmpty()) rowCurrentLord.setVisibility(View.GONE);
+        if (sOverlord == null || sOverlord.isEmpty()) rowOverlord.setVisibility(View.GONE);
+        if (sHeir == null || sHeir.isEmpty()) rowHeir.setVisibility(View.GONE);
+        if (sDied == null || sDied.isEmpty()) rowDiedOut.setVisibility(View.GONE);
+        if (sTitles.length == 0) layoutTitles.setVisibility(View.GONE);
+        if (sWeapons.length == 0) layoutAncestralWeapons.setVisibility(View.GONE);
+        if (cCadetBranches.getCount() == 0) layoutCadetBranches.setVisibility(View.GONE);
+        if (cSwornMembers.getCount() == 0) layoutSwornMembers.setVisibility(View.GONE);
+
+        // Setups list of cadet branches
+        String[] fromBra = new String[] { InfoGotContract.HouseEntry.COLUMN_NAME };
+        int[] toBra = new int[] { android.R.id.text1 };
+        final SimpleCursorAdapter adapterBranches = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, fromBra, toBra, 0);
+        adapterBranches.changeCursor(cCadetBranches);
+        cadetBranches.setAdapter(adapterBranches);
+        cadetBranches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = adapterBranches.getCursor();
+                cursor.moveToPosition(position);
+                int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.HouseEntry._ID));
+                Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
+                i.putExtra(getResources().getString(R.string.idHouse), clickedId);
+                startActivity(i);
+            }
+        });
+
+        // Setups list of sworn members
+        String[] fromMem = new String[] { InfoGotContract.CharacterEntry.COLUMN_NAME };
+        int[] toMem = new int[] { android.R.id.text1 };
+        final SimpleCursorAdapter adapterMembers = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, fromMem, toMem, 0);
+        adapterMembers.changeCursor(cSwornMembers);
+        swornMembers.setAdapter(adapterMembers);
+        swornMembers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = adapterMembers.getCursor();
+                cursor.moveToPosition(position);
+                int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.CharacterEntry._ID));
+                Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
+                i.putExtra(getResources().getString(R.string.idCharacter), clickedId);
+                startActivity(i);
+            }
+        });
+
         // Scraps coat of arms image on Google Images
-        String debugHouseName = "site:gameofthrones.fandom.com House Stark of Winterfell";
+        final String debugHouseName = "site:gameofthrones.fandom.com " + sName;
         try {
             ScrappingTask scrTask = new ScrappingTask(debugHouseName);
             scrTask.setTargetImageView(coatImage);
@@ -93,71 +185,13 @@ public class HouseDetailsFragment extends Fragment {
         }
 
         // Browse on the internet if button clicked
+        final String query = sName + " info";
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO String query = houseName;
-                String query = "House Stark of Winterfell";
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
                 intent.putExtra(SearchManager.QUERY, query); // query contains search string
                 startActivity(intent);
-            }
-        });
-
-        // TODO Configurar vista a partir del modelo
-
-        // TODO Onclick para mostrar detalles
-        // Underline to indicate link
-        currentLord.setPaintFlags(currentLord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        overlord.setPaintFlags(overlord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        heir.setPaintFlags(heir.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        founder.setPaintFlags(founder.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        // TODO Comprobar si no hay
-        if (false) rowCurrentLord.setVisibility(View.GONE);
-        if (false) rowOverlord.setVisibility(View.GONE);
-        if (false) rowHeir.setVisibility(View.GONE);
-        if (false) rowDiedOut.setVisibility(View.GONE);
-        if (false) layoutTitles.setVisibility(View.GONE);
-        if (false) layoutAncestralWeapons.setVisibility(View.GONE);
-        if (false) layoutCadetBranches.setVisibility(View.GONE);
-        if (false) layoutSwornMembers.setVisibility(View.GONE);
-
-        // TODO Datos desde BD
-        String[] cad = new String[]{"House Greystark of Wolf's Den", "House Karstark of Karhold"};
-        ArrayAdapter<String> acad = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, cad);
-        cadetBranches.setAdapter(acad);
-        cadetBranches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = (String) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-                /*
-                House clicked = (House) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getActivity(), BookDetailsActivity.class);
-                i.putExtra(getResources().getString(R.string.idHouse), clicked.getId());
-                startActivity(i);
-                 */
-            }
-        });
-
-        // TODO Datos desde BD
-        String[] sw = new String[]{"Jon Snow", "Arya Stark", "Sansa Stark"};
-        ArrayAdapter<String> asw = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, sw);
-        swornMembers.setAdapter(asw);
-        swornMembers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = (String) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-
-                //Character clicked = (Character) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-                //i.putExtra(getResources().getString(R.string.idCharacter), clicked.getId());
-                startActivity(i);
-
             }
         });
 
@@ -173,13 +207,14 @@ public class HouseDetailsFragment extends Fragment {
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    private Cursor getTitles(int idh){
+    private String[] getTitles(int idh){
         Uri uri = InfoGotContract.HouseTitleEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.HouseTitleEntry.COLUMN_TITLE};
         String selection = InfoGotContract.HouseTitleEntry.COLUMN_IDH+"= ?";
         String[] selectionArgs = new String[]{String.valueOf(idh)};
         String sortOrder = null;
-        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        return getStringArrayFromCursor(cursor);
     }
 
     private Cursor getSeats(int idh){
@@ -191,13 +226,14 @@ public class HouseDetailsFragment extends Fragment {
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    private Cursor getAncestralWeapons(int idh){
+    private String[] getAncestralWeapons(int idh){
         Uri uri = InfoGotContract.AncestralWeaponEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.AncestralWeaponEntry.COLUMN_WEAPON};
         String selection = InfoGotContract.AncestralWeaponEntry.COLUMN_IDH+"= ?";
         String[] selectionArgs = new String[]{String.valueOf(idh)};
         String sortOrder = null;
-        return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+        return getStringArrayFromCursor(cursor);
     }
 
     private Cursor getCharacter(int id){
@@ -229,5 +265,25 @@ public class HouseDetailsFragment extends Fragment {
         String[] selectionArgs = new String[]{String.valueOf(idh)};
         String sortOrder = null;
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    }
+
+    private String[] getStringArrayFromCursor(Cursor cursor) {
+        cursor.moveToFirst();
+        String[] result = new String[cursor.getCount()];
+        for(int i = 0; i < result.length; i++) {
+            result[i] = cursor.getString(0);
+            cursor.moveToNext();
+        }
+
+        return result;
+    }
+
+    private String joinStrings(String separator, String[] strings) {
+        String res = "";
+        if(strings.length > 0) {
+            for (String s : strings) res += s + "\n";
+            res = res.substring(0, res.length() - 1);
+        }
+        return res;
     }
 }
