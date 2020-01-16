@@ -90,7 +90,7 @@ public class CharacterDetailsFragment extends Fragment {
 
         // Gets data
         cursorCharacter.moveToFirst();
-        final String sName = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_NAME));
+        String sName = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_NAME));
         Log.d(TAG, sName);
         String sGender = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_GENDER));
         String sCulture = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_CULTURE));
@@ -103,7 +103,7 @@ public class CharacterDetailsFragment extends Fragment {
         String[] sAliases = getAliases(idCharacter);
         Cursor cAllegiances = getAllegiances(idCharacter);
         Cursor cBooks = getBooks(idCharacter);
-        //String[] sTvSeries = getTVseries(idCharacter);
+        //String[] sTvSeries = getTVseries(idCharacter); // Throws exception!
 
         // Configures view from data
         name.setText(sName);
@@ -157,7 +157,6 @@ public class CharacterDetailsFragment extends Fragment {
             }
         });
 
-        Log.d(TAG, "Books count: " + cBooks.getCount());
         String[] fromBoo = new String[] { InfoGotContract.BookEntry.COLUMN_NAME };
         int[] toBoo = new int[] { android.R.id.text1 };
         final SimpleCursorAdapter adapterBooks = new SimpleCursorAdapter(
@@ -177,9 +176,9 @@ public class CharacterDetailsFragment extends Fragment {
         });
 
         // Scraps first result image in Google Images
-        String debugCharacterName = "site:gameofthrones.fandom.com image " + sName;
+        final String queryImage = "site:gameofthrones.fandom.com image " + sName + " " + ((sAliases.length > 0) ? sAliases[0] : "");
         try {
-            ScrappingTask scrTask = new ScrappingTask(debugCharacterName);
+            ScrappingTask scrTask = new ScrappingTask(queryImage);
             scrTask.setTargetImageView(characterImage);
             scrTask.execute();
         } catch (UnsupportedEncodingException e) {
@@ -187,12 +186,12 @@ public class CharacterDetailsFragment extends Fragment {
         }
 
         // Browse on the internet if button clicked
-        final String query = sName + " character ice and fire";
+        final String queryCharacter = sName + " character ice and fire";
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, query); // query contains search string
+                intent.putExtra(SearchManager.QUERY, queryCharacter); // query contains search string
                 startActivity(intent);
             }
         });

@@ -5,17 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -31,13 +29,19 @@ public class BookDetailsFragment extends Fragment {
 
     private ImageView cover;
 
+    private Cursor cursorBook;
+    private int idBook;
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
-        String idBook = getActivity().getIntent().getStringExtra(getResources().getString(R.string.idBook));
-        // TODO Obtener datos desde la BD
-
+        idBook = getActivity().getIntent().getIntExtra(getResources().getString(R.string.idBook), -1);
+        cursorBook = getBook(idBook);
+        if(cursorBook == null) {
+            Log.d(TAG, "No cursor book");
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -49,12 +53,47 @@ public class BookDetailsFragment extends Fragment {
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView releaseDate = (TextView) view.findViewById(R.id.releaseDate);
         TextView authors = (TextView) view.findViewById(R.id.authors);
+        TextView numberOfPages = (TextView) view.findViewById(R.id.numberOfPages);
         NonScrollListView characters = (NonScrollListView) view.findViewById(R.id.characters);
 
+        // Gets data
+        for(String s : cursorBook.getColumnNames()) Log.d(TAG, "Col " + s);
+        cursorBook.moveToFirst();
+        final String sName = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NAME));
+        String sReleaseDate = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_RELEASED));
+        //String sAuthors = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_AUTHOR)); // TODO No column in cursor!
+        String sNumberOfPages = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NPAGES));
+        Cursor cCharacters = getCharacters(idBook);
+        Log.d(TAG, "Chars: " + cCharacters.getCount()); // TODO Fix, only gets first character
+
+        // Configures view from data
+        name.setText(sName);
+        releaseDate.setText(sReleaseDate);
+        //authors.setText(sAuthors);
+        numberOfPages.setText(sNumberOfPages);
+
+        String[] fromAll = new String[] { InfoGotContract.CharacterEntry.COLUMN_NAME };
+        int[] toAll = new int[] { android.R.id.text1 };
+        final SimpleCursorAdapter adapterCharacters = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_list_item_1, null, fromAll, toAll, 0);
+        adapterCharacters.changeCursor(cCharacters);
+        characters.setAdapter(adapterCharacters);
+        characters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = adapterCharacters.getCursor();
+                cursor.moveToPosition(position);
+                int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.CharacterEntry._ID));
+                Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
+                i.putExtra(getResources().getString(R.string.idCharacter), clickedId);
+                startActivity(i);
+            }
+        });
+
         // Scraps first result image in Google Images
-        String debugCharacterName = "A Knight of the Seven Kingdoms book cover";
+        final String queryCover = sName + " book cover";
         try {
-            ScrappingTask scrTask = new ScrappingTask(debugCharacterName);
+            ScrappingTask scrTask = new ScrappingTask(queryCover);
             scrTask.setTargetImageView(cover);
             scrTask.execute();
         } catch (UnsupportedEncodingException e) {
@@ -65,32 +104,10 @@ public class BookDetailsFragment extends Fragment {
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO String query = bookName + " book";
-                String query = "A Knight of the Seven Kingdoms book";
+                String query = sName + " book";
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
                 intent.putExtra(SearchManager.QUERY, query); // query contains search string
                 startActivity(intent);
-            }
-        });
-
-        // TODO Configurar vista a partir del modelo
-
-
-        // TODO Datos desde BD
-        String[] values = new String[]{"Jon Snow", "Daenerys Targaryen", "Arya Stark", "Sansa Stark"};
-        ArrayAdapter<String> asw = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, values);
-        characters.setAdapter(asw);
-        characters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = (String) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(), clicked, Toast.LENGTH_SHORT).show();
-
-                //Character clicked = (Character) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-                //i.putExtra(getResources().getString(R.string.idCharacter), clicked.getId());
-                startActivity(i);
             }
         });
 

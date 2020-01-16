@@ -50,9 +50,11 @@ public class BookListFragment extends ListFragment implements TextWatcher {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Cursor clicked = (Cursor) getListAdapter().getItem(position);
+        Cursor cursor = adapter.getCursor();
+        cursor.moveToPosition(position);
+        int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.BookEntry._ID));
         Intent i = new Intent(getActivity(), BookDetailsActivity.class);
-        i.putExtra(getResources().getString(R.string.idBook), clicked.getString(0));
+        i.putExtra(getResources().getString(R.string.idBook), clickedId);
         startActivity(i);
     }
 
