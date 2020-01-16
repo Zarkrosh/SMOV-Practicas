@@ -159,8 +159,8 @@
                         android:layout_weight="0.6"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/detailsTextSize" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/detailsLinkSize" />
                 </TableRow>
 
                 <!-- Overlord -->

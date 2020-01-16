@@ -55,9 +55,11 @@ public class HouseListFragment extends ListFragment implements TextWatcher {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Cursor clicked = (Cursor) getListAdapter().getItem(position);
+        Cursor cursor = adapter.getCursor();
+        cursor.moveToPosition(position);
+        int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.HouseEntry._ID));
         Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
-        i.putExtra(getResources().getString(R.string.idHouse), clicked.getString(0));
+        i.putExtra(getResources().getString(R.string.idHouse), clickedId);
         startActivity(i);
     }
 

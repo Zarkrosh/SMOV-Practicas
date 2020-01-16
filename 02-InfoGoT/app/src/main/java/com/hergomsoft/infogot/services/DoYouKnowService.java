@@ -4,22 +4,25 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.preference.PreferenceManager;
 
 import com.hergomsoft.infogot.HouseDetailsActivity;
 import com.hergomsoft.infogot.R;
 import com.hergomsoft.infogot.components.SettingsDialog;
+import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.domain.House;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class DoYouKnowService extends IntentService {
@@ -36,7 +39,7 @@ public class DoYouKnowService extends IntentService {
     private final Intent anotherIntent = new Intent("com.hergomsoft.ANOTHER_QUIZ");
 
     // List of houses
-    private ArrayList<House> houses;
+    private ArrayList<Pair<Integer, String>> housesAndWords;
     private int currentHouseIndex;
 
     public DoYouKnowService() { super(TAG); }
@@ -47,15 +50,16 @@ public class DoYouKnowService extends IntentService {
         Log.d(TAG, "Creating " + TAG + " service");
 
         // Generates list of houses with any words
-        houses = new ArrayList<>();
-        // ArrayList<House> allHouses = // TODO Get list of all houses or in constructor
-        ArrayList<House> allHouses = new ArrayList<>();
-        for(House h : allHouses) {
-            if(!h.getWords().isEmpty()) houses.add(h);
+        housesAndWords = new ArrayList<>();
+        Cursor c = getAllHouses();
+        while(c.moveToNext()) {
+            if(!c.getString(1).isEmpty()) {
+                housesAndWords.add(new Pair<>(c.getInt(0), c.getString(1)));
+            }
         }
 
         // Shuffles list
-        Collections.shuffle(houses);
+        Collections.shuffle(housesAndWords);
         currentHouseIndex = 0;
     }
 
@@ -63,7 +67,7 @@ public class DoYouKnowService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         this.runFlag = false;
-        houses = null;
+        housesAndWords = null;
         Log.d(TAG, "Destroying " + TAG + " service");
     }
 
@@ -94,14 +98,16 @@ public class DoYouKnowService extends IntentService {
             if(!runFlag) continue;
 
             try {
-                if(houses.size() > 0) {
-                    House next = houses.get(currentHouseIndex++);
-                    if(currentHouseIndex >= houses.size()) {
+                if(housesAndWords.size() > 0) {
+                    int id = housesAndWords.get(currentHouseIndex).first;
+                    String words = housesAndWords.get(currentHouseIndex++).second;
+                    Log.d(TAG, "Random: " + id + " -> " + words);
+                    if(currentHouseIndex >= housesAndWords.size()) {
                         currentHouseIndex = 0;
-                        Collections.shuffle(houses);
+                        Collections.shuffle(housesAndWords);
                     }
 
-                    String message = NOTIFICATION_TEXT_BEGIN + next.getWords();
+                    String message = NOTIFICATION_TEXT_BEGIN + words;
                     // Multiline text
                     builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
                     builder.setContentText(message);
@@ -112,8 +118,8 @@ public class DoYouKnowService extends IntentService {
 
                     // If user taps on notification, loads the house details
                     Intent i = new Intent(this, HouseDetailsActivity.class);
-                    //i.putExtra(getResources().getString(R.string.idHouse), next.getId());
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 1001, i, 0);
+                    i.putExtra(getResources().getString(R.string.idHouse), id);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 1001, i, PendingIntent.FLAG_UPDATE_CURRENT);
                     builder.setContentIntent(pendingIntent);
 
                     // Shows notification
@@ -121,7 +127,7 @@ public class DoYouKnowService extends IntentService {
                     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
                     notificationManagerCompat.notify(NOTIFICATION_ID, notification);
 
-                    Thread.sleep(timeout * 1000);
+                    Thread.sleep(timeout * 1000 * 60); // Timeout in minutes
                 } else {
                     Log.d(TAG, "No houses in list. Stopping service");
                     runFlag = false;
@@ -132,5 +138,14 @@ public class DoYouKnowService extends IntentService {
             }
 
         }
+    }
+
+    private Cursor getAllHouses(){
+        Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
+        String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_WORDS};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        return getApplicationContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
 }

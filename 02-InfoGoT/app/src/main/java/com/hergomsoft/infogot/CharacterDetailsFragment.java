@@ -42,6 +42,12 @@ public class CharacterDetailsFragment extends Fragment {
         super.onCreate(savedInstance);
 
         idCharacter = getActivity().getIntent().getIntExtra(getResources().getString(R.string.idCharacter), -1);
+        if(idCharacter == -1) {
+            Log.d(TAG, "No idCharacter");
+            Toast.makeText(getActivity(), "An error ocurred", Toast.LENGTH_SHORT);
+            getActivity().finish();
+        }
+
         cursorCharacter = getCharacter(idCharacter);
         if(cursorCharacter == null) {
             Log.d(TAG, "No cursor character");
@@ -103,7 +109,7 @@ public class CharacterDetailsFragment extends Fragment {
         String[] sAliases = getAliases(idCharacter);
         Cursor cAllegiances = getAllegiances(idCharacter);
         Cursor cBooks = getBooks(idCharacter);
-        //String[] sTvSeries = getTVseries(idCharacter); // Throws exception!
+        String[] sTvSeries = getTVseries(idCharacter); // Throws exception!
 
         // Configures view from data
         name.setText(sName);
@@ -116,7 +122,7 @@ public class CharacterDetailsFragment extends Fragment {
         spouse.setText(sSpouse);
         titles.setText(joinStrings("\n", sTitles));
         aliases.setText(joinStrings("\n", sAliases));
-        //tvSeries.setText(joinStrings("\n", sTvSeries));
+        tvSeries.setText(joinStrings("\n", sTvSeries));
 
         if(sDied == null || sDied.isEmpty()) rowDied.setVisibility(View.GONE);
         if(sFather == null || sFather.isEmpty()) rowFather.setVisibility(View.GONE);
@@ -127,7 +133,7 @@ public class CharacterDetailsFragment extends Fragment {
         if(sAliases.length == 0) layoutAliases.setVisibility(View.GONE);
         if(cAllegiances.getCount() == 0) layoutAllegiances.setVisibility(View.GONE);
         if(cBooks.getCount() == 0) layoutBooks.setVisibility(View.GONE);
-        //if(sTvSeries.length == 0) layoutTVSeries.setVisibility(View.GONE);
+        if(sTvSeries.length == 0) layoutTVSeries.setVisibility(View.GONE);
 
         // TODO Onclick para mostrar detalles
         // Underline to indicate link

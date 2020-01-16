@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hergomsoft.infogot.components.CustomProgress;
 import com.hergomsoft.infogot.components.SettingsDialog;
+import com.hergomsoft.infogot.db.DBHelper;
 import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.services.DoYouKnowService;
 
@@ -61,7 +62,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Downloads data from API if it's not already downloaded
         boolean downloaded = true;
         if(!downloaded) {
-            //new DownloadTask().execute();
+            // Deletes previous database
+            // TODO Gestionar versionados en la API
+            deleteDatabase(DBHelper.DATABASE_NAME);
+            new DownloadTask().execute();
         } else {
             startService(new Intent(this, DoYouKnowService.class));
         }

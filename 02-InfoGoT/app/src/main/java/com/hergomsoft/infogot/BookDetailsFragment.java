@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -37,6 +38,12 @@ public class BookDetailsFragment extends Fragment {
         super.onCreate(savedInstance);
 
         idBook = getActivity().getIntent().getIntExtra(getResources().getString(R.string.idBook), -1);
+        if(idBook == -1) {
+            Log.d(TAG, "No idBook");
+            Toast.makeText(getActivity(), "An error ocurred", Toast.LENGTH_SHORT);
+            getActivity().finish();
+        }
+
         cursorBook = getBook(idBook);
         if(cursorBook == null) {
             Log.d(TAG, "No cursor book");
