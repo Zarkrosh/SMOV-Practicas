@@ -133,7 +133,7 @@ public class BookDetailsFragment extends Fragment {
     private Cursor getCharacters(int idb){
         Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.CharacterEntry._ID, InfoGotContract.CharacterEntry.COLUMN_NAME};
-        String selection = InfoGotContract.CharacterEntry._ID + "=(SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDC  +
+        String selection = InfoGotContract.CharacterEntry._ID + " IN (SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDC  +
                 " FROM "+ InfoGotContract.AppearanceEntry.TABLE_NAME+" A " +
                 "WHERE A." + InfoGotContract.AppearanceEntry.COLUMN_IDB+"= ?)";
         String[] selectionArgs = new String[]{String.valueOf(idb)};
