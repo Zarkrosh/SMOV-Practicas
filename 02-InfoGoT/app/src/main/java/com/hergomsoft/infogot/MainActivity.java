@@ -2,9 +2,11 @@ package com.hergomsoft.infogot;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,10 +31,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private final int MAX_DAYS_DOWNLOAD = 20; // Update app info every 20 days
 
     private SettingsDialog settingsDialog;
 
@@ -60,10 +66,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHouses.setOnClickListener(this);
 
         // Downloads data from API if it's not already downloaded
-        boolean downloaded = true;
-        if(!downloaded) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        long time = preferences.getLong(getString(R.string.prefDownloadDate), -1);
+        Date downDate = (time != -1) ? new Date(time) : null;
+        Date currDate = new Date();
+        if(downDate == null ||
+            TimeUnit.DAYS.convert(currDate.getTime() - downDate.getTime(), TimeUnit.MILLISECONDS) > MAX_DAYS_DOWNLOAD) {
+            // TODO Find better solution for versioning
             // Deletes previous database
-            // TODO Gestionar versionados en la API
+            preferences.edit().remove(getString(R.string.prefDownloadDate)).apply();
             deleteDatabase(DBHelper.DATABASE_NAME);
             new DownloadTask().execute();
         } else {
@@ -221,10 +232,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Download failed
                 Toast.makeText(MainActivity.this,
                     getResources().getString(R.string.downloadError), Toast.LENGTH_LONG).show();
+            } else {
+                // Registers new download date
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                preferences.edit().putLong(getString(R.string.prefDownloadDate), new Date().getTime()).apply();
+                // Starts service
+                startService(new Intent(MainActivity.this, DoYouKnowService.class));
             }
-
-            // Starts service
-            startService(new Intent(MainActivity.this, DoYouKnowService.class));
         }
 
         private String getResponse(String sUrl, int page) throws IOException {

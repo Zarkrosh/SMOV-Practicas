@@ -106,6 +106,7 @@ public class CharacterDetailsFragment extends Fragment {
         final Pair<Integer, String> sFather = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_FATHER)));
         final Pair<Integer, String> sMother = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_MOTHER)));
         final Pair<Integer, String> sSpouse = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_SPOUSE)));
+        String sPlayedBy = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_PLAYEDBY));
         String[] sTitles = getTitles(idCharacter);
         String[] sAliases = getAliases(idCharacter);
         Cursor cAllegiances = getAllegiances(idCharacter);
@@ -121,6 +122,7 @@ public class CharacterDetailsFragment extends Fragment {
         if(sFather != null) father.setText(sFather.second);
         if(sMother != null) mother.setText(sMother.second);
         if(sSpouse != null) spouse.setText(sSpouse.second);
+        playedBy.setText(sPlayedBy);
         titles.setText(joinStrings("\n", sTitles));
         aliases.setText(joinStrings("\n", sAliases));
         tvSeries.setText(joinStrings("\n", sTvSeries));
@@ -129,7 +131,7 @@ public class CharacterDetailsFragment extends Fragment {
         if(sFather == null) rowFather.setVisibility(View.GONE);
         if(sMother == null) rowMother.setVisibility(View.GONE);
         if(sSpouse == null) rowSpouse.setVisibility(View.GONE);
-        if(false) rowPlayedBy.setVisibility(View.GONE);
+        if(sPlayedBy == null || sPlayedBy.isEmpty()) rowPlayedBy.setVisibility(View.GONE);
         if(sTitles.length == 0) layoutTitles.setVisibility(View.GONE);
         if(sAliases.length == 0) layoutAliases.setVisibility(View.GONE);
         if(cAllegiances.getCount() == 0) layoutAllegiances.setVisibility(View.GONE);
@@ -140,7 +142,6 @@ public class CharacterDetailsFragment extends Fragment {
         father.setPaintFlags(father.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mother.setPaintFlags(mother.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         spouse.setPaintFlags(spouse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        //playedBy.setPaintFlags(playedBy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // Setups listeners
         father.setOnClickListener(new View.OnClickListener() {

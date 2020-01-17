@@ -64,19 +64,17 @@ public class BookDetailsFragment extends Fragment {
         NonScrollListView characters = (NonScrollListView) view.findViewById(R.id.characters);
 
         // Gets data
-        for(String s : cursorBook.getColumnNames()) Log.d(TAG, "Col " + s);
         cursorBook.moveToFirst();
         String sName = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NAME));
-        String sReleaseDate = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_RELEASED));
-        //String sAuthors = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_AUTHOR)); // TODO No column in cursor!
+        String sReleaseDate = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_RELEASED)).substring(0, 10);
+        String sAuthors = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_AUTHOR)); // TODO Multiple authors
         String sNumberOfPages = cursorBook.getString(cursorBook.getColumnIndex(InfoGotContract.BookEntry.COLUMN_NPAGES));
         Cursor cCharacters = getCharacters(idBook);
-        Log.d(TAG, "Chars: " + cCharacters.getCount()); // TODO Fix, only gets first character
 
         // Configures view from data
         name.setText(sName);
         releaseDate.setText(sReleaseDate);
-        //authors.setText(sAuthors);
+        authors.setText(sAuthors);
         numberOfPages.setText(sNumberOfPages);
 
         String[] fromAll = new String[] { InfoGotContract.CharacterEntry.COLUMN_NAME };

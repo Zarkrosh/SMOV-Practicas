@@ -73,7 +73,7 @@ public class SettingsDialog extends Dialog implements View.OnClickListener, Comp
 
     private void updateConfiguration() {
         // Updates view configuration from preferences
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
         boolean enabled = sharedPref.getBoolean(activity.getString(R.string.prefNotificationsEnabled), DEFAULT_ENABLED_NOTIFICATIONS);
         int timeout = sharedPref.getInt(activity.getString(R.string.prefQuizTimeout), DEFAULT_QUIZ_TIMEOUT);
 
@@ -92,7 +92,7 @@ public class SettingsDialog extends Dialog implements View.OnClickListener, Comp
                 int timeout = seekBarQuizTimeout.getProgress() + MIN_SEEKBAR; // Minutes
 
                 // Saves to SharedPreferences
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean(activity.getString(R.string.prefNotificationsEnabled), notificationsEnabled);
                 editor.putInt(activity.getString(R.string.prefQuizTimeout), timeout);

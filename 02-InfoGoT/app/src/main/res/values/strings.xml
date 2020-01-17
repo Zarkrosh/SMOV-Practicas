@@ -3,6 +3,7 @@
     <!-- Shared preferences -->
     <string name="prefNotificationsEnabled">notifEnabled</string>
     <string name="prefQuizTimeout">quizTimeout</string>
+    <string name="prefDownloadDate">downloadDate</string>
 
     <!-- Main -->
     <string name="app_name">InfoGoT</string>

@@ -90,7 +90,7 @@ public class DoYouKnowService extends IntentService {
 
         runFlag = true;
         while(runFlag) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             runFlag = preferences.getBoolean(getString(R.string.prefNotificationsEnabled), SettingsDialog.DEFAULT_ENABLED_NOTIFICATIONS);
             int timeout = preferences.getInt(getString(R.string.prefQuizTimeout), SettingsDialog.DEFAULT_QUIZ_TIMEOUT);
             Log.d(TAG, "Timeout: " + timeout);

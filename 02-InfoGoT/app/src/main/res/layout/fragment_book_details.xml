@@ -42,11 +42,10 @@
 
                 <ImageView android:id="@+id/cover"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginStart="@dimen/marginCoatImage"
                     android:layout_marginEnd="@dimen/marginCoatImage"
-                    android:maxHeight="@dimen/maxHeightImageDetails"
                     android:gravity="center" />
 
                 <ImageButton android:id="@+id/browse"
