@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusableInTouchMode="true"
     tools:context=".BookDetailsActivity">
 
 
@@ -13,7 +14,6 @@
         android:layout_height="80dp"
         android:gravity="center"
         android:padding="5dp"
-        android:text="A Knight of the Seven Kingdoms"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
@@ -88,7 +88,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="06/10/2015"
                         android:textSize="@dimen/detailsTextSize"
                         android:textColor="@android:color/black" />
 
@@ -113,7 +112,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="George R. R. Martin"
                         android:textSize="@dimen/detailsTextSize"
                         android:textColor="@android:color/black" />
 
@@ -138,7 +136,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="666"
                         android:textSize="@dimen/detailsTextSize"
                         android:textColor="@android:color/black" />
 

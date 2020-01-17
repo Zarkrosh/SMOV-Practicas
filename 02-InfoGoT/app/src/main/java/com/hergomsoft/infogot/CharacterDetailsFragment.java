@@ -62,9 +62,14 @@ public class CharacterDetailsFragment extends Fragment {
         TextView name = (TextView) view.findViewById(R.id.name);
         CustomLoadingImage characterImage = (CustomLoadingImage) view.findViewById(R.id.characterImage);
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
+        // Gender
+        TableRow rowGender = (TableRow) view.findViewById(R.id.rowGender);
         TextView gender = (TextView) view.findViewById(R.id.gender);
+        // Culture
+        TableRow rowCulture = (TableRow) view.findViewById(R.id.rowCulture);
         TextView culture = (TextView) view.findViewById(R.id.culture);
-        // Born Died (hidden if not)
+        // Born Died
+        TableRow rowBorn = (TableRow) view.findViewById(R.id.rowBorn);
         TextView born = (TextView) view.findViewById(R.id.born);
         TableRow rowDied = (TableRow) view.findViewById(R.id.rowDied);
         TextView died = (TextView) view.findViewById(R.id.died);
@@ -126,6 +131,9 @@ public class CharacterDetailsFragment extends Fragment {
         aliases.setText(joinStrings("\n", sAliases));
         tvSeries.setText(joinStrings("\n", sTvSeries));
 
+        if(sGender == null || sGender.isEmpty()) rowGender.setVisibility(View.GONE);
+        if(sCulture == null || sCulture.isEmpty()) rowCulture.setVisibility(View.GONE);
+        if(sBorn == null || sBorn.isEmpty()) rowBorn.setVisibility(View.GONE);
         if(sDied == null || sDied.isEmpty()) rowDied.setVisibility(View.GONE);
         if(sFather == null) rowFather.setVisibility(View.GONE);
         if(sMother == null) rowMother.setVisibility(View.GONE);

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusableInTouchMode="true"
     tools:context=".BookDetailsActivity">
 
     <TextView android:id="@+id/name"
@@ -12,7 +13,6 @@
         android:layout_height="80dp"
         android:gravity="center"
         android:padding="15dp"
-        android:text="House Stark of Winterfell"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
@@ -77,7 +77,6 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:singleLine="false"
-                android:text="A running grey direwolf, on an ice-white field"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -88,7 +87,7 @@
                 android:layout_margin="15dp">
 
                 <!-- Words -->
-                <TableRow
+                <TableRow android:id="@+id/rowWords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView android:id="@+id/sWords"
@@ -107,13 +106,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Winter is coming"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
 
                 <!-- Region -->
-                <TableRow
+                <TableRow android:id="@+id/rowRegion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView android:id="@+id/sRegion"
@@ -132,7 +130,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="The North"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
@@ -182,7 +179,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="House Baratheon of King's Landing"
                         android:textColor="@color/colorPrimary"
                         android:textSize="22sp" />
                 </TableRow>
@@ -213,7 +209,7 @@
                 </TableRow>
 
                 <!-- Founded -->
-                <TableRow
+                <TableRow android:id="@+id/rowFounded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView android:id="@+id/sFounded"
@@ -232,13 +228,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Age of Heroes"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
 
                 <!-- Founder -->
-                <TableRow
+                <TableRow android:id="@+id/rowFounder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView android:id="@+id/sFounder"
@@ -257,7 +252,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Brandon Stark"
                         android:textColor="@color/colorPrimary"
                         android:textSize="24sp" />
                 </TableRow>
@@ -320,7 +314,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="King in the North\nLord of Winterfell\nWarden of the North\nKing of the Trident"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -356,7 +349,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Scattered (formerly Winterfell)"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -392,7 +384,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Ice"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 

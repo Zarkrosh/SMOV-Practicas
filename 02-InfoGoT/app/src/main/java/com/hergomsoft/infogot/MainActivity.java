@@ -402,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             values.put(InfoGotContract.HouseEntry.COLUMN_WORDS,house.getString("words"));
             values.put(InfoGotContract.HouseEntry.COLUMN_COATOFARMS,house.getString("coatOfArms"));
             values.put(InfoGotContract.HouseEntry.COLUMN_DIED,house.getString("diedOut"));
-            values.put(InfoGotContract.HouseEntry.COLUMN_FOUDED,house.getString("founded"));
+            values.put(InfoGotContract.HouseEntry.COLUMN_FOUNDED,house.getString("founded"));
             String urlOverlord=house.getString("overlord");
             values.put(InfoGotContract.HouseEntry.COLUMN_OVERLORD,urlOverlord.isEmpty() ? null : Integer.parseInt(urlOverlord.substring(urlOverlord.lastIndexOf("/") + 1)));
             String urlHeir=house.getString("heir");

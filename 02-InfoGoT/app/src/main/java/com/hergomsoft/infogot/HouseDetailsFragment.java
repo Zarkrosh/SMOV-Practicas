@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TableRow;
@@ -64,8 +63,10 @@ public class HouseDetailsFragment extends Fragment {
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView coatDescription = (TextView) view.findViewById(R.id.coatDescription);
         // Words
+        TableRow rowWords = (TableRow) view.findViewById(R.id.rowWords);
         TextView words = (TextView) view.findViewById(R.id.words);
         // Region
+        TableRow rowRegion = (TableRow) view.findViewById(R.id.rowRegion);
         TextView region = (TextView) view.findViewById(R.id.region);
         // Current lord (hidden if none)
         TableRow rowCurrentLord = (TableRow) view.findViewById(R.id.rowCurrentLord);
@@ -77,9 +78,11 @@ public class HouseDetailsFragment extends Fragment {
         TableRow rowHeir = (TableRow) view.findViewById(R.id.rowHeir);
         TextView heir = (TextView) view.findViewById(R.id.heir);
         // Founded and founder
+        TableRow rowFounded = (TableRow) view.findViewById(R.id.rowFounded);
         TextView founded = (TextView) view.findViewById(R.id.founded);
+        TableRow rowFounder = (TableRow) view.findViewById(R.id.rowFounder);
         TextView founder = (TextView) view.findViewById(R.id.founder);
-        // Died out (hidden if none)
+        // Died out
         TableRow rowDiedOut = (TableRow) view.findViewById(R.id.rowDiedOut);
         TextView diedOut = (TextView) view.findViewById(R.id.diedOut);
         // Titles of house
@@ -107,7 +110,7 @@ public class HouseDetailsFragment extends Fragment {
         final Pair<Integer, String> sLord = getCharacterPairIDName(cursorHouse.getInt(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_LORD)));
         final Pair<Integer, String> sOverlord = getHousePairIDName(cursorHouse.getInt(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_OVERLORD)));
         final Pair<Integer, String> sHeir = getCharacterPairIDName(cursorHouse.getInt(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_HEIR)));
-        String sFounded = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_FOUDED));
+        String sFounded = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_FOUNDED));
         final Pair<Integer, String> sFounder = getCharacterPairIDName(cursorHouse.getInt(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_FOUNDER)));
         String sDied = cursorHouse.getString(cursorHouse.getColumnIndex(InfoGotContract.HouseEntry.COLUMN_DIED));
         String[] sTitles = getTitles(idHouse);
@@ -121,55 +124,63 @@ public class HouseDetailsFragment extends Fragment {
         coatDescription.setText(sCoat);
         words.setText(sWords);
         region.setText(sRegion);
-        if(sLord != null) currentLord.setText(sLord.second);
-        if(sOverlord != null) overlord.setText(sOverlord.second);
-        if(sHeir != null) heir.setText(sHeir.second);
+        if(sLord != null) {
+            currentLord.setText(sLord.second);
+            currentLord.setPaintFlags(currentLord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            currentLord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCharacterDetails(sLord.first);
+                }
+            });
+        }
+        if(sOverlord != null) {
+            overlord.setText(sOverlord.second);
+            overlord.setPaintFlags(overlord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            overlord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showHouseDetails(sOverlord.first);
+                }
+            });
+        }
+        if(sHeir != null) {
+            heir.setText(sHeir.second);
+            heir.setPaintFlags(heir.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            heir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCharacterDetails(sHeir.first);
+                }
+            });
+        }
         founded.setText(sFounded);
-        if(sFounder != null) founder.setText(sFounder.second);
+        if(sFounder != null) {
+            founder.setText(sFounder.second);
+            founder.setPaintFlags(founder.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            founder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCharacterDetails(sFounder.first);
+                }
+            });
+        }
         diedOut.setText(sDied);
         titles.setText(joinStrings("\n", sTitles));
         seats.setText(joinStrings("\n", sSeats));
         ancestralWeapons.setText(joinStrings("\n", sWeapons));
 
-        // Underline to indicate link
-        currentLord.setPaintFlags(currentLord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        overlord.setPaintFlags(overlord.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        heir.setPaintFlags(heir.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        founder.setPaintFlags(founder.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        // Setups listeners
-        currentLord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCharacterDetails(sLord.first);
-            }
-        });
-        overlord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showHouseDetails(sOverlord.first);
-            }
-        });
-        heir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCharacterDetails(sHeir.first);
-            }
-        });
-        founder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCharacterDetails(sFounder.first);
-            }
-        });
-
-
         // Hides void sections
+        if (sWords == null || sWords.isEmpty()) rowWords.setVisibility(View.GONE);
+        if (sRegion == null || sRegion.isEmpty()) rowRegion.setVisibility(View.GONE);
         if (sLord == null) rowCurrentLord.setVisibility(View.GONE);
         if (sOverlord == null) rowOverlord.setVisibility(View.GONE);
         if (sHeir == null) rowHeir.setVisibility(View.GONE);
+        if (sFounded == null || sFounded.isEmpty()) rowFounded.setVisibility(View.GONE);
+        if (sFounder == null) rowFounder.setVisibility(View.GONE);
         if (sDied == null || sDied.isEmpty()) rowDiedOut.setVisibility(View.GONE);
         if (sTitles.length == 0) layoutTitles.setVisibility(View.GONE);
+        if (sSeats.length == 0) layoutSeats.setVisibility(View.GONE);
         if (sWeapons.length == 0) layoutAncestralWeapons.setVisibility(View.GONE);
         if (cCadetBranches.getCount() == 0) layoutCadetBranches.setVisibility(View.GONE);
         if (cSwornMembers.getCount() == 0) layoutSwornMembers.setVisibility(View.GONE);

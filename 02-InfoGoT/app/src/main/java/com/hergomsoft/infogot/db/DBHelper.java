@@ -141,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         InfoGotContract.HouseEntry.COLUMN_NAME + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_REGION + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_WORDS + " TEXT, " +
-                        InfoGotContract.HouseEntry.COLUMN_FOUDED + " TEXT, " +
+                        InfoGotContract.HouseEntry.COLUMN_FOUNDED + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_DIED + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_COATOFARMS + " TEXT, " +
                         InfoGotContract.HouseEntry.COLUMN_OVERLORD + " INTEGER, " +

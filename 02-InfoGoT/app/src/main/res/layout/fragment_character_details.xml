@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusableInTouchMode="true"
     tools:context=".CharacterDetailsActivity">
 
     <TextView android:id="@+id/name"
@@ -12,7 +13,6 @@
         android:layout_height="80dp"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Jon Snow"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
@@ -71,7 +71,7 @@
                 android:layout_margin="15dp">
 
                 <!-- Gender -->
-                <TableRow
+                <TableRow android:id="@+id/rowGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -90,13 +90,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Male"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
 
                 <!-- Culture -->
-                <TableRow
+                <TableRow android:id="@+id/rowCulture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -115,13 +114,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Northmen"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
 
                 <!-- Born -->
-                <TableRow
+                <TableRow android:id="@+id/rowBorn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -140,7 +138,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="In 283 AC"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
@@ -165,7 +162,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
@@ -190,7 +186,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text=""
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/detailsLinkSize" />
                 </TableRow>
@@ -215,7 +210,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text=""
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/detailsLinkSize" />
                 </TableRow>
@@ -240,7 +234,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text=""
                         android:textColor="@color/colorPrimary"
                         android:textSize="24sp" />
                 </TableRow>
@@ -265,7 +258,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Kit Harington"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/detailsTextSize" />
                 </TableRow>
@@ -303,7 +295,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:text="King in the North\nLord of Winterfell\nWarden of the North\nKing of the Trident"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -339,7 +330,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:text="Lord Snow\nNed Stark's Bastard\nThe Snow of Winterfell\nThe Crow-Come-Over\nThe 998th Lord Commander of the Night's Watch\nThe Bastard of Winterfell\nThe Black Bastard of the Wall\nLord Crow"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -443,7 +433,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:text="Season 1\nSeason 2\nSeason 3\nSeason 4\nSeason 5\nSeason 6\nSeason 7\nSeason 8"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 

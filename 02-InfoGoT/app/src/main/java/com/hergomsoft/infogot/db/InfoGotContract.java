@@ -205,7 +205,7 @@ public class InfoGotContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_REGION= "region";
         public static final String COLUMN_WORDS = "words";
-        public static final String COLUMN_FOUDED= "founded";
+        public static final String COLUMN_FOUNDED = "founded";
         public static final String COLUMN_DIED= "died";
         public static final String COLUMN_COATOFARMS= "coatofarms";
         public static final String COLUMN_OVERLORD = "overlord";

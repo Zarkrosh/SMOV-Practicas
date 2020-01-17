@@ -114,9 +114,6 @@ public class BookDetailsFragment extends Fragment {
             }
         });
 
-        ScrollView scrollView = view.findViewById(R.id.scrollview);
-        scrollView.fullScroll(ScrollView.FOCUS_UP);
-
         return view;
     }
 
