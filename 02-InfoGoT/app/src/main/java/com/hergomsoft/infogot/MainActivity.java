@@ -317,6 +317,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         private void insertCharacterEntry(JSONObject character) throws JSONException {
+            if(character.getString("name").isEmpty())
+                return;
             ContentValues values=new ContentValues();
             String urlID=character.getString("url");
 

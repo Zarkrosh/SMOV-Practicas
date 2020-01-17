@@ -20,8 +20,6 @@ import com.hergomsoft.infogot.HouseDetailsActivity;
 import com.hergomsoft.infogot.R;
 import com.hergomsoft.infogot.components.SettingsDialog;
 import com.hergomsoft.infogot.db.InfoGotContract;
-import com.hergomsoft.infogot.domain.House;
-
 import java.util.ArrayList;
 import java.util.Collections;
 

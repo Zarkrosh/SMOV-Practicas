@@ -19,7 +19,6 @@ import android.widget.TextView;
 import androidx.fragment.app.ListFragment;
 
 import com.hergomsoft.infogot.db.InfoGotContract;
-import com.hergomsoft.infogot.domain.House;
 
 import java.util.ArrayList;
 
