@@ -91,9 +91,7 @@ public class BookDetailsFragment extends Fragment {
                 Cursor cursor = adapterCharacters.getCursor();
                 cursor.moveToPosition(position);
                 int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.CharacterEntry._ID));
-                Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-                i.putExtra(getResources().getString(R.string.idCharacter), clickedId);
-                startActivity(i);
+                showCharacterDetails(clickedId);
             }
         });
 
@@ -140,4 +138,12 @@ public class BookDetailsFragment extends Fragment {
         String sortOrder = null;
         return getContext().getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
     }
+
+
+    private void showCharacterDetails(int idCharacter) {
+        Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idCharacter), idCharacter);
+        startActivity(i);
+    }
+
 }

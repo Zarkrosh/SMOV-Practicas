@@ -323,18 +323,6 @@ public class HouseDetailsFragment extends Fragment {
         }
     }
 
-    private void showCharacterDetails(int idCharacter) {
-        Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
-        i.putExtra(getResources().getString(R.string.idCharacter), idCharacter);
-        startActivity(i);
-    }
-
-    private void showHouseDetails(int idHouse) {
-        Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
-        i.putExtra(getResources().getString(R.string.idHouse), idHouse);
-        startActivity(i);
-    }
-
     private String[] getStringArrayFromCursor(Cursor cursor) {
         cursor.moveToFirst();
         String[] result = new String[cursor.getCount()];
@@ -353,5 +341,17 @@ public class HouseDetailsFragment extends Fragment {
             res = res.substring(0, res.length() - 1);
         }
         return res;
+    }
+
+    private void showCharacterDetails(int idCharacter) {
+        Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idCharacter), idCharacter);
+        startActivity(i);
+    }
+
+    private void showHouseDetails(int idHouse) {
+        Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idHouse), idHouse);
+        startActivity(i);
     }
 }

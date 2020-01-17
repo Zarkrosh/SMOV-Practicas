@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,9 +103,9 @@ public class CharacterDetailsFragment extends Fragment {
         String sCulture = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_CULTURE));
         String sBorn = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_BORN));
         String sDied = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_DIED));
-        String sFather = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_FATHER));
-        String sMother = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_MOTHER));
-        String sSpouse = cursorCharacter.getString(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_SPOUSE));
+        final Pair<Integer, String> sFather = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_FATHER)));
+        final Pair<Integer, String> sMother = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_MOTHER)));
+        final Pair<Integer, String> sSpouse = getCharacterPairIDName(cursorCharacter.getInt(cursorCharacter.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_SPOUSE)));
         String[] sTitles = getTitles(idCharacter);
         String[] sAliases = getAliases(idCharacter);
         Cursor cAllegiances = getAllegiances(idCharacter);
@@ -117,17 +118,17 @@ public class CharacterDetailsFragment extends Fragment {
         culture.setText(sCulture);
         born.setText(sBorn);
         died.setText(sDied);
-        father.setText(sFather);
-        mother.setText(sMother);
-        spouse.setText(sSpouse);
+        if(sFather != null) father.setText(sFather.second);
+        if(sMother != null) mother.setText(sMother.second);
+        if(sSpouse != null) spouse.setText(sSpouse.second);
         titles.setText(joinStrings("\n", sTitles));
         aliases.setText(joinStrings("\n", sAliases));
         tvSeries.setText(joinStrings("\n", sTvSeries));
 
         if(sDied == null || sDied.isEmpty()) rowDied.setVisibility(View.GONE);
-        if(sFather == null || sFather.isEmpty()) rowFather.setVisibility(View.GONE);
-        if(sMother == null || sMother.isEmpty()) rowMother.setVisibility(View.GONE);
-        if(sMother == null || sSpouse.isEmpty()) rowSpouse.setVisibility(View.GONE);
+        if(sFather == null) rowFather.setVisibility(View.GONE);
+        if(sMother == null) rowMother.setVisibility(View.GONE);
+        if(sSpouse == null) rowSpouse.setVisibility(View.GONE);
         if(false) rowPlayedBy.setVisibility(View.GONE);
         if(sTitles.length == 0) layoutTitles.setVisibility(View.GONE);
         if(sAliases.length == 0) layoutAliases.setVisibility(View.GONE);
@@ -135,14 +136,31 @@ public class CharacterDetailsFragment extends Fragment {
         if(cBooks.getCount() == 0) layoutBooks.setVisibility(View.GONE);
         if(sTvSeries.length == 0) layoutTVSeries.setVisibility(View.GONE);
 
-        // TODO Onclick para mostrar detalles
         // Underline to indicate link
         father.setPaintFlags(father.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mother.setPaintFlags(mother.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         spouse.setPaintFlags(spouse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         //playedBy.setPaintFlags(playedBy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        father.setPaintFlags(father.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
+        // Setups listeners
+        father.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCharacterDetails(sFather.first);
+            }
+        });
+        mother.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCharacterDetails(sMother.first);
+            }
+        });
+        spouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCharacterDetails(sSpouse.first);
+            }
+        });
 
         Log.d(TAG, "Allegiances count: " + cAllegiances.getCount());
         String[] fromAll = new String[] { InfoGotContract.HouseEntry.COLUMN_NAME };
@@ -157,9 +175,7 @@ public class CharacterDetailsFragment extends Fragment {
                 Cursor cursor = adapterAllegiances.getCursor();
                 cursor.moveToPosition(position);
                 int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.HouseEntry._ID));
-                Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
-                i.putExtra(getResources().getString(R.string.idHouse), clickedId);
-                startActivity(i);
+                showHouseDetails(clickedId);
             }
         });
 
@@ -175,9 +191,7 @@ public class CharacterDetailsFragment extends Fragment {
                 Cursor cursor = adapterBooks.getCursor();
                 cursor.moveToPosition(position);
                 int clickedId = cursor.getInt(cursor.getColumnIndex(InfoGotContract.BookEntry._ID));
-                Intent i = new Intent(getActivity(), BookDetailsActivity.class);
-                i.putExtra(getResources().getString(R.string.idBook), clickedId);
-                startActivity(i);
+                showBookDetails(clickedId);
             }
         });
 
@@ -277,6 +291,17 @@ public class CharacterDetailsFragment extends Fragment {
         return result;
     }
 
+    private Pair<Integer, String> getCharacterPairIDName(int idCharacter) {
+        Cursor cChar = getCharacter(idCharacter);
+        if(cChar.getCount() > 0) {
+            cChar.moveToFirst();
+            String name = cChar.getString(cChar.getColumnIndex(InfoGotContract.CharacterEntry.COLUMN_NAME));
+            return new Pair<>(idCharacter, name);
+        } else {
+            return null;
+        }
+    }
+
     private String joinStrings(String separator, String[] strings) {
         String res = "";
         if(strings.length > 0) {
@@ -284,5 +309,23 @@ public class CharacterDetailsFragment extends Fragment {
             res = res.substring(0, res.length() - 1);
         }
         return res;
+    }
+
+    private void showCharacterDetails(int idCharacter) {
+        Intent i = new Intent(getActivity(), CharacterDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idCharacter), idCharacter);
+        startActivity(i);
+    }
+
+    private void showBookDetails(int idBook) {
+        Intent i = new Intent(getActivity(), BookDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idBook), idBook);
+        startActivity(i);
+    }
+
+    private void showHouseDetails(int idHouse) {
+        Intent i = new Intent(getActivity(), HouseDetailsActivity.class);
+        i.putExtra(getResources().getString(R.string.idHouse), idHouse);
+        startActivity(i);
     }
 }
