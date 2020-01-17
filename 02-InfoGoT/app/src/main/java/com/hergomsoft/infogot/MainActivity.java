@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHouses.setOnClickListener(this);
 
         // Downloads data from API if it's not already downloaded
-        boolean downloaded = true;
+        boolean downloaded = false;
         if(!downloaded) {
             // Deletes previous database
             // TODO Gestionar versionados en la API
