@@ -4,7 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
+
+import com.hergomsoft.infogot.components.CustomLoadingImage;
 
 import org.json.JSONObject;
 
@@ -30,13 +31,13 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
     private static final String JSON_SRC = "ou";
 
     private String sUrl;
-    private ImageView target;
+    private CustomLoadingImage target;
 
     public ScrappingTask(String search) throws UnsupportedEncodingException {
         sUrl = GOOGLE_IMAGES_BASE + URLEncoder.encode(search, StandardCharsets.UTF_8.name());
     }
 
-    public void setTargetImageView(ImageView target) {
+    public void setTargetImageView(CustomLoadingImage target) {
         this.target = target;
     }
 
@@ -59,7 +60,10 @@ public class ScrappingTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         if(result != null) {
             // Download completed
-            target.setImageBitmap(result);
+            target.setImageFromBitmap(result);
+        } else {
+            // Download failed
+            target.setTextAndShow("Could not load image");
         }
     }
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.hergomsoft.infogot.components.CustomLoadingImage;
 import com.hergomsoft.infogot.components.NonScrollListView;
 import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
@@ -32,8 +33,6 @@ import java.io.UnsupportedEncodingException;
 
 public class CharacterDetailsFragment extends Fragment {
     private static final String TAG = CharacterDetailsFragment.class.getSimpleName();
-
-    private ImageView characterImage;
 
     private Cursor cursorCharacter;
     private int idCharacter;
@@ -61,7 +60,7 @@ public class CharacterDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_character_details, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.name);
-        characterImage = (ImageView) view.findViewById(R.id.characterImage);
+        CustomLoadingImage characterImage = (CustomLoadingImage) view.findViewById(R.id.characterImage);
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView gender = (TextView) view.findViewById(R.id.gender);
         TextView culture = (TextView) view.findViewById(R.id.culture);

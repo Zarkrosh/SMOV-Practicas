@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.hergomsoft.infogot.components.CustomLoadingImage;
 import com.hergomsoft.infogot.components.NonScrollListView;
 import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
@@ -59,7 +60,7 @@ public class HouseDetailsFragment extends Fragment {
         // Name of house
         TextView name = (TextView) view.findViewById(R.id.name);
         // Coat of house (image and description)
-        ImageView coatImage = (ImageView) view.findViewById(R.id.coat);
+        CustomLoadingImage coatImage = (CustomLoadingImage) view.findViewById(R.id.coat);
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView coatDescription = (TextView) view.findViewById(R.id.coatDescription);
         // Words

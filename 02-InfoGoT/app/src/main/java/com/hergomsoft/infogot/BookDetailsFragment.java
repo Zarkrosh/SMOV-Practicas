@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.hergomsoft.infogot.components.CustomLoadingImage;
 import com.hergomsoft.infogot.components.NonScrollListView;
 import com.hergomsoft.infogot.db.InfoGotContract;
 import com.hergomsoft.infogot.utils.ScrappingTask;
@@ -27,8 +29,6 @@ import java.io.UnsupportedEncodingException;
 
 public class BookDetailsFragment extends Fragment {
     private static final String TAG = BookDetailsFragment.class.getSimpleName();
-
-    private ImageView cover;
 
     private Cursor cursorBook;
     private int idBook;
@@ -56,7 +56,7 @@ public class BookDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_details, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.name);
-        cover = (ImageView) view.findViewById(R.id.cover);
+        CustomLoadingImage cover = (CustomLoadingImage) view.findViewById(R.id.cover);
         ImageButton browse = (ImageButton) view.findViewById(R.id.browse);
         TextView releaseDate = (TextView) view.findViewById(R.id.releaseDate);
         TextView authors = (TextView) view.findViewById(R.id.authors);
@@ -94,7 +94,7 @@ public class BookDetailsFragment extends Fragment {
         });
 
         // Scraps first result image in Google Images
-        final String queryCover = sName + " book cover";
+        final String queryCover = sName + " book " + sAuthors + " cover";
         try {
             ScrappingTask scrTask = new ScrappingTask(queryCover);
             scrTask.setTargetImageView(cover);
@@ -113,6 +113,9 @@ public class BookDetailsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        ScrollView scrollView = view.findViewById(R.id.scrollview);
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
 
         return view;
     }

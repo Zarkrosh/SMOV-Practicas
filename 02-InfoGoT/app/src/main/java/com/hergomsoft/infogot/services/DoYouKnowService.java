@@ -1,13 +1,17 @@
 package com.hergomsoft.infogot.services;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
@@ -26,10 +30,12 @@ import java.util.Collections;
 public class DoYouKnowService extends IntentService {
     private static final String TAG = DoYouKnowService.class.getSimpleName();
 
-    private final String NOTIFICATION_CHANNEL_ID = "channel_DoYouKnow";
+    private final String QUIZ_CHANNEL_ID = "channel_DoYouKnow";
+    private final String QUIZ_CHANNEL_DESCRIPTION = "Quiz of houses' words";
+
     private final int NOTIFICATION_ID = 101; // Unique identifier for notification
 
-    private final String NOTIFICATION_TITLE = "Do you know";
+    private final String NOTIFICATION_TITLE = "Do you know?";
     private final String NOTIFICATION_TEXT_BEGIN = "Which house has the words: ";
 
     private boolean runFlag = false;
@@ -72,7 +78,7 @@ public class DoYouKnowService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         // Notification Channel ID passed as a parameter here will be ignored for all the Android versions below 8.0
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), QUIZ_CHANNEL_ID);
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         builder.setSmallIcon(R.drawable.ic_got);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_got));
@@ -85,6 +91,15 @@ public class DoYouKnowService extends IntentService {
                 500
         });
         builder.setContentTitle(NOTIFICATION_TITLE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    QUIZ_CHANNEL_ID,
+                    QUIZ_CHANNEL_DESCRIPTION,
+                    NotificationManager.IMPORTANCE_HIGH);
+            manager.createNotificationChannel(channel);
+            builder.setChannelId(QUIZ_CHANNEL_ID);
+        }
 
         runFlag = true;
         while(runFlag) {
@@ -110,7 +125,7 @@ public class DoYouKnowService extends IntentService {
                     builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
                     builder.setContentText(message);
 
-                    // TODO Button another quiz
+                    // TODO Button another quiz (is it possible?)
                     //PendingIntent anotherPendingIntent = PendingIntent.getBroadcast(this,0, anotherIntent, 0);
                     //builder.addAction(R.drawable.ic_got, "Yeah, ask me another", anotherPendingIntent);
 
