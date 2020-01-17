@@ -261,7 +261,7 @@ public class CharacterDetailsFragment extends Fragment {
     private Cursor getBooks(int idc){
         Uri uri = InfoGotContract.BookEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.BookEntry._ID, InfoGotContract.BookEntry.COLUMN_NAME};
-        String selection = InfoGotContract.BookEntry._ID + "=(SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDB +
+        String selection = InfoGotContract.BookEntry._ID + " IN (SELECT A."+InfoGotContract.AppearanceEntry.COLUMN_IDB +
                 " FROM "+ InfoGotContract.AppearanceEntry.TABLE_NAME+" A " +
                 "WHERE A." + InfoGotContract.AppearanceEntry.COLUMN_IDC+"= ?)";
         String[] selectionArgs = new String[]{String.valueOf(idc)};
@@ -272,7 +272,7 @@ public class CharacterDetailsFragment extends Fragment {
     private Cursor getAllegiances(int idc){
         Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_NAME};
-        String selection = InfoGotContract.HouseEntry._ID + "=(SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDH+
+        String selection = InfoGotContract.HouseEntry._ID + " IN (SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDH+
                 " FROM "+InfoGotContract.MemberEntry.TABLE_NAME+" M " +
                 "WHERE M." +InfoGotContract.MemberEntry.COLUMN_IDC+"= ?)";
         String[] selectionArgs = new String[]{String.valueOf(idc)};

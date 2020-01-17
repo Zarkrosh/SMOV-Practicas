@@ -282,7 +282,7 @@ public class HouseDetailsFragment extends Fragment {
     private Cursor getBranches(int idh){
         Uri uri = InfoGotContract.HouseEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.HouseEntry._ID, InfoGotContract.HouseEntry.COLUMN_NAME};
-        String selection = InfoGotContract.HouseEntry._ID + "=(SELECT B."+InfoGotContract.BranchEntry.COLUMN_IDHB+
+        String selection = InfoGotContract.HouseEntry._ID + " IN (SELECT B."+InfoGotContract.BranchEntry.COLUMN_IDHB+
                 " FROM "+InfoGotContract.BranchEntry.TABLE_NAME+" B " +
                 "WHERE B." +InfoGotContract.BranchEntry.COLUMN_IDH+"= ?)";
         String[] selectionArgs = new String[]{String.valueOf(idh)};
@@ -293,7 +293,7 @@ public class HouseDetailsFragment extends Fragment {
     private Cursor getMembers(int idh){
         Uri uri = InfoGotContract.CharacterEntry.CONTENT_URI;
         String[] projection = new String[]{InfoGotContract.CharacterEntry._ID, InfoGotContract.CharacterEntry.COLUMN_NAME};
-        String selection = InfoGotContract.CharacterEntry._ID + "=(SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDC+
+        String selection = InfoGotContract.CharacterEntry._ID + " IN (SELECT M."+InfoGotContract.MemberEntry.COLUMN_IDC+
                 " FROM "+InfoGotContract.MemberEntry.TABLE_NAME+" M " +
                 "WHERE M." +InfoGotContract.MemberEntry.COLUMN_IDH+"= ?)";
         String[] selectionArgs = new String[]{String.valueOf(idh)};
