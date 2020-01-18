@@ -3,6 +3,7 @@ package com.hergomsoft.infogot;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,11 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SettingsDialog settingsDialog;
 
-    private ImageButton btnSettings;
-    private Button btnBooks;
-    private Button btnCharacters;
-    private Button btnHouses;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +53,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsDialog = new SettingsDialog(this);
 
         // Link views
-        btnSettings = (ImageButton) findViewById(R.id.btnSettings);
+        ImageButton btnSettings = (ImageButton) findViewById(R.id.btnSettings);
         btnSettings.setOnClickListener(this);
-        btnBooks = (Button) findViewById(R.id.btnBooks);
+        Button btnBooks = (Button) findViewById(R.id.btnBooks);
         btnBooks.setOnClickListener(this);
-        btnCharacters = (Button) findViewById(R.id.btnCharacters);
+        Button btnCharacters = (Button) findViewById(R.id.btnCharacters);
         btnCharacters.setOnClickListener(this);
-        btnHouses = (Button) findViewById(R.id.btnHouses);
+        Button btnHouses = (Button) findViewById(R.id.btnHouses);
         btnHouses.setOnClickListener(this);
+        TextView credits = (TextView) findViewById(R.id.credits);
+        credits.setOnClickListener(this);
+        credits.setPaintFlags(credits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // Downloads data from API if it's not already downloaded
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnSettings:
                 settingsDialog.show();
+                break;
+            case R.id.credits:
+                String url = "https://github.com/Zarkrosh/SMOV-Practicas/";
+                i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 break;
             default:
                 Log.d(TAG, "Unknown click event source: " + v.getId());
